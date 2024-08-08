@@ -7,25 +7,65 @@
 
 import SwiftUI
 
+enum HealthMetricType: CaseIterable, Identifiable {
+    
+    case steps, weight, calories
+    var id: Self {self}
+    
+    var title: String {
+        switch self {
+        case .steps:
+            return "Steps"
+        case .weight:
+            return "Weight"
+        case .calories:
+            return "Calories"
+        }
+    }
+
+    var tintColor: Color {
+        switch self {
+        case .steps:
+            return .mint
+        case .weight:
+            return .orange
+        case .calories:
+            return .green
+        }
+    }
+}
+
 struct ContentView: View {
+    
+    @State private var selectedStat: HealthMetricType = .steps
+    
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack {
-                    VStack {
-                        HStack{
-                            VStack (alignment: .leading){
-                                Label("Steps", image: "figure.walk.motion")
-                                    .font(.title3.bold())
-                                    .foregroundColor(.mint)
-                                Text("Avg:10K Steps")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundStyle(.mint)
+                VStack (spacing: 20){
+                    Picker("Selected Stat", selection: $selectedStat){
+                        ForEach(HealthMetricType.allCases) { metric in
+                            Text(metric.title)
                         }
+                    }
+                    .pickerStyle(.segmented)
+                    
+                    VStack {
+                        NavigationLink(value: selectedStat) {
+                            HStack{
+                                VStack (alignment: .leading){
+                                    Label("Steps", image: "figure.walk.motion")
+                                        .font(.title3.bold())
+                                        .foregroundColor(.mint)
+                                    Text("Avg:10K Steps")
+                                        .font(.caption)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundStyle(.mint)
+                            }
+                        }
+                        .foregroundStyle(.secondary)
                         .padding(.bottom, 12)
                         
                         RoundedRectangle(cornerRadius: 12)
@@ -34,21 +74,17 @@ struct ContentView: View {
                     }
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
-                    .padding(.bottom, 30)
                     
                     VStack(alignment: .leading) {
-                        
-                            VStack (alignment: .leading){
-                                Label("Averages", image: "calendar")
-                                    .font(.title3.bold())
-                                    .foregroundColor(.mint)
-                                Text("Last 28 Days")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                        
+                        VStack (alignment: .leading){
+                            Label("Averages", image: "calendar")
+                                .font(.title3.bold())
+                                .foregroundColor(.mint)
+                            Text("Last 28 Days")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                         .padding(.bottom, 12)
-                        
                         RoundedRectangle(cornerRadius: 12)
                             .foregroundStyle(.secondary)
                             .frame(height: 250)
@@ -59,12 +95,15 @@ struct ContentView: View {
             }
             .padding()
             .navigationTitle("Dashboard")
+            .navigationDestination(for: HealthMetricType.self) { metric in
+                Text("\(metric.title)")
+                
+            }
         }
+        .tint(selectedStat.tintColor)
     }
 }
 
-
 #Preview {
     ContentView()
-        
 }
