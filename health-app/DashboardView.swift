@@ -22,13 +22,13 @@ enum HealthMetricType: CaseIterable, Identifiable {
             return "Calories"
         }
     }
-
+    
     var tintColor: Color {
         switch self {
         case .steps:
             return .mint
         case .weight:
-            return .orange
+            return .purple
         case .calories:
             return .green
         }
@@ -49,6 +49,25 @@ struct DashboardView: View {
                         }
                     }
                     .pickerStyle(.segmented)
+                    
+                    VStack {
+                        HStack{
+                            VStack (alignment: .leading){
+                                Label("Steps", image: "figure.walk.motion")
+                                    .font(.title3.bold())
+                                    .foregroundColor(.mint)
+                                Text("10.234")
+                                    .font(.title2.bold())
+                                    .foregroundStyle(.black)
+                            }
+                            Spacer()
+                            Text("Today")
+                        }
+                        .foregroundStyle(.secondary)
+                        .padding(.bottom, 12)
+                    }
+                    .padding()
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
                     
                     VStack {
                         NavigationLink(value: selectedStat) {
