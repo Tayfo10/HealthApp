@@ -8,17 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		C75E4BE22C64D54000626717 /* health_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BE12C64D54000626717 /* health_appApp.swift */; };
-		C75E4BE42C64D54000626717 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BE32C64D54000626717 /* ContentView.swift */; };
+		C75E4BE42C64D54000626717 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BE32C64D54000626717 /* DashboardView.swift */; };
 		C75E4BE62C64D54200626717 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C75E4BE52C64D54200626717 /* Assets.xcassets */; };
 		C75E4BE92C64D54200626717 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C75E4BE82C64D54200626717 /* Preview Assets.xcassets */; };
+		C75E4BF02C65F02200626717 /* HealthDataListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BEF2C65F02100626717 /* HealthDataListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C75E4BDE2C64D54000626717 /* health-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "health-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C75E4BE12C64D54000626717 /* health_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = health_appApp.swift; sourceTree = "<group>"; };
-		C75E4BE32C64D54000626717 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C75E4BE32C64D54000626717 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		C75E4BE52C64D54200626717 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C75E4BE82C64D54200626717 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C75E4BEF2C65F02100626717 /* HealthDataListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,9 +54,10 @@
 			isa = PBXGroup;
 			children = (
 				C75E4BE12C64D54000626717 /* health_appApp.swift */,
-				C75E4BE32C64D54000626717 /* ContentView.swift */,
+				C75E4BE32C64D54000626717 /* DashboardView.swift */,
 				C75E4BE52C64D54200626717 /* Assets.xcassets */,
 				C75E4BE72C64D54200626717 /* Preview Content */,
+				C75E4BEF2C65F02100626717 /* HealthDataListView.swift */,
 			);
 			path = "health-app";
 			sourceTree = "<group>";
@@ -137,7 +140,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C75E4BE42C64D54000626717 /* ContentView.swift in Sources */,
+				C75E4BF02C65F02200626717 /* HealthDataListView.swift in Sources */,
+				C75E4BE42C64D54000626717 /* DashboardView.swift in Sources */,
 				C75E4BE22C64D54000626717 /* health_appApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
