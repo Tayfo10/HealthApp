@@ -12,6 +12,7 @@
 		C75E4BE62C64D54200626717 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C75E4BE52C64D54200626717 /* Assets.xcassets */; };
 		C75E4BE92C64D54200626717 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C75E4BE82C64D54200626717 /* Preview Assets.xcassets */; };
 		C75E4BF02C65F02200626717 /* HealthDataListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BEF2C65F02100626717 /* HealthDataListView.swift */; };
+		C75E4BF22C6622F700626717 /* HealthKitPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BF12C6622F700626717 /* HealthKitPermissionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		C75E4BE52C64D54200626717 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C75E4BE82C64D54200626717 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C75E4BEF2C65F02100626717 /* HealthDataListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataListView.swift; sourceTree = "<group>"; };
+		C75E4BF12C6622F700626717 /* HealthKitPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitPermissionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 				C75E4BE52C64D54200626717 /* Assets.xcassets */,
 				C75E4BE72C64D54200626717 /* Preview Content */,
 				C75E4BEF2C65F02100626717 /* HealthDataListView.swift */,
+				C75E4BF12C6622F700626717 /* HealthKitPermissionView.swift */,
 			);
 			path = "health-app";
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 			files = (
 				C75E4BF02C65F02200626717 /* HealthDataListView.swift in Sources */,
 				C75E4BE42C64D54000626717 /* DashboardView.swift in Sources */,
+				C75E4BF22C6622F700626717 /* HealthKitPermissionView.swift in Sources */,
 				C75E4BE22C64D54000626717 /* health_appApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
