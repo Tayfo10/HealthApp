@@ -6,8 +6,13 @@
 //
 
 import SwiftUI
+import HealthKitUI
 
 struct HealthKitPermissionView: View {
+    
+    @Environment(HealthKitManager.self) private var hkmanager
+    @Environment(\.dismiss) private var dismiss
+    @State private var isShowingHealthKitPermission = false
     
     var description = """
 
@@ -30,14 +35,29 @@ struct HealthKitPermissionView: View {
                 Text(description)
             }
             Button("Connect Apple Health") {
+                isShowingHealthKitPermission = true
             }
             .buttonStyle(.borderedProminent)
             .tint(.pink)
         }
         .padding(30)
+        .healthDataAccessRequest(store: hkmanager.store,
+                                 shareTypes: hkmanager.types,
+                                 readTypes: hkmanager.types,
+                                 trigger: isShowingHealthKitPermission) { result in
+            switch result {
+            
+            case .success(_):
+                dismiss()
+            case .failure(_):
+                dismiss()
+            }
+            
+        }
     }
 }
 
 #Preview {
     HealthKitPermissionView()
+        .environment(HealthKitManager())
 }
