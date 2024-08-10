@@ -16,6 +16,77 @@ import Observation
     
     let types: Set = [HKQuantityType(.stepCount), HKQuantityType(.activeEnergyBurned), HKQuantityType(.bodyMass)]
     
+    func fetchStepCount() async {
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: .now)
+        let endDate = calendar.date(byAdding: .day, value: 1, to: today)!
+        let startDate = calendar.date(byAdding: .day, value: -28, to: endDate)!
+        
+        let queryPredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
+        let samplePredicate = HKSamplePredicate.quantitySample(type: HKQuantityType(.stepCount), predicate:queryPredicate)
+        
+        let everyDay = DateComponents(day:1)
+        
+        let sumOfStepsQuery = HKStatisticsCollectionQueryDescriptor(
+            predicate: samplePredicate,
+            options: .cumulativeSum,
+            anchorDate: endDate,
+            intervalComponents: everyDay)
+        
+        let stepCounts = try! await sumOfStepsQuery.result(for: store)
+        
+    }
+    
+    func fetchWeights() async {
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: .now)
+        let endDate = calendar.date(byAdding: .day, value: 1, to: today)!
+        let startDate = calendar.date(byAdding: .day, value: -28, to: endDate)!
+        
+        let queryPredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
+        let samplePredicate = HKSamplePredicate.quantitySample(type: HKQuantityType(.bodyMass), predicate:queryPredicate)
+        
+        let everyDay = DateComponents(day:1)
+        
+        let weightQuery = HKStatisticsCollectionQueryDescriptor(
+            predicate: samplePredicate,
+            options: .mostRecent,
+            anchorDate: endDate,
+            intervalComponents: everyDay)
+        
+        let weights = try! await weightQuery.result(for: store)
+           
+    }
+    
+    func fetchCalories() async {
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: .now)
+        let endDate = calendar.date(byAdding: .day, value: 1, to: today)!
+        let startDate = calendar.date(byAdding: .day, value: -28, to: endDate)!
+        
+        let queryPredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
+        let samplePredicate = HKSamplePredicate.quantitySample(type: HKQuantityType(.activeEnergyBurned), predicate:queryPredicate)
+        
+        let everyDay = DateComponents(day:1)
+        
+        let sumOfCaloriesQuery = HKStatisticsCollectionQueryDescriptor(
+            predicate: samplePredicate,
+            options: .cumulativeSum,
+            anchorDate: endDate,
+            intervalComponents: everyDay)
+        
+        let caloriesCount = try! await sumOfCaloriesQuery.result(for: store)
+        
+        for calories in caloriesCount.statistics() {
+            print(calories.sumQuantity() ?? 0)
+        }
+        
+    }
+
+    
 // This function may be used later in the project. Used to inject mockData.
 //    func addSimulatorData() async {
 //        

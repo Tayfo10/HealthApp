@@ -118,9 +118,7 @@ struct DashboardView: View {
             }
             .padding()
             .task {
-                
                 isShowingPermissionViewSheet = !hasSeenPermissionView
-                
             }
             .navigationTitle("Dashboard")
             .navigationDestination(for: HealthMetricType.self) { metric in
