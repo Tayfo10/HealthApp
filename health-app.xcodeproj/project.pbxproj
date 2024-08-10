@@ -12,6 +12,8 @@
 		C75E4BE62C64D54200626717 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C75E4BE52C64D54200626717 /* Assets.xcassets */; };
 		C75E4BE92C64D54200626717 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C75E4BE82C64D54200626717 /* Preview Assets.xcassets */; };
 		C75E4BF02C65F02200626717 /* HealthDataListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BEF2C65F02100626717 /* HealthDataListView.swift */; };
+		C75E4BF22C6622F700626717 /* HealthKitPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BF12C6622F700626717 /* HealthKitPermissionView.swift */; };
+		C75E4BF52C6668D200626717 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BF42C6668D200626717 /* HealthKitManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +23,9 @@
 		C75E4BE52C64D54200626717 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C75E4BE82C64D54200626717 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C75E4BEF2C65F02100626717 /* HealthDataListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataListView.swift; sourceTree = "<group>"; };
+		C75E4BF12C6622F700626717 /* HealthKitPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitPermissionView.swift; sourceTree = "<group>"; };
+		C75E4BF32C66670700626717 /* health-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "health-app.entitlements"; sourceTree = "<group>"; };
+		C75E4BF42C6668D200626717 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,11 +58,14 @@
 		C75E4BE02C64D54000626717 /* health-app */ = {
 			isa = PBXGroup;
 			children = (
+				C75E4BF32C66670700626717 /* health-app.entitlements */,
 				C75E4BE12C64D54000626717 /* health_appApp.swift */,
 				C75E4BE32C64D54000626717 /* DashboardView.swift */,
 				C75E4BE52C64D54200626717 /* Assets.xcassets */,
 				C75E4BE72C64D54200626717 /* Preview Content */,
 				C75E4BEF2C65F02100626717 /* HealthDataListView.swift */,
+				C75E4BF12C6622F700626717 /* HealthKitPermissionView.swift */,
+				C75E4BF42C6668D200626717 /* HealthKitManager.swift */,
 			);
 			path = "health-app";
 			sourceTree = "<group>";
@@ -142,6 +150,8 @@
 			files = (
 				C75E4BF02C65F02200626717 /* HealthDataListView.swift in Sources */,
 				C75E4BE42C64D54000626717 /* DashboardView.swift in Sources */,
+				C75E4BF22C6622F700626717 /* HealthKitPermissionView.swift in Sources */,
+				C75E4BF52C6668D200626717 /* HealthKitManager.swift in Sources */,
 				C75E4BE22C64D54000626717 /* health_appApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,12 +283,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "health-app/health-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"health-app/Preview Content\"";
 				DEVELOPMENT_TEAM = 68N48TM8MU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "The app shows your step and weight data in an interactive chart";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "The app allows you to add step, weight and colry data to Apple Health";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -302,12 +315,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "health-app/health-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"health-app/Preview Content\"";
 				DEVELOPMENT_TEAM = 68N48TM8MU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "The app shows your step and weight data in an interactive chart";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "The app allows you to add step, weight and colry data to Apple Health";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
