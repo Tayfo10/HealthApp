@@ -43,6 +43,12 @@ struct DashboardView: View {
     @State private var isShowingPermissionViewSheet = false
     @State private var selectedStat: HealthMetricType = .steps
     
+    var avgStepCount: Double {
+        guard !hkManager.stepData.isEmpty else { return 0 }
+        let totalSteps = hkManager.stepData.reduce(0) {$0 + $1.value }
+        return totalSteps/Double(hkManager.stepData.count)
+        
+    }
     
     var body: some View {
         NavigationStack {
@@ -61,7 +67,7 @@ struct DashboardView: View {
                                 Label("Steps", image: "figure.walk.motion")
                                     .font(.title3.bold())
                                     .foregroundColor(.mint)
-                                Text("10.234")
+                                Text("\(Int(hkManager.stepData.last?.value ?? 0))")
                                     .font(.title2.bold())
                                     .foregroundStyle(.black)
                             }
@@ -81,7 +87,7 @@ struct DashboardView: View {
                                     Label("Steps", image: "figure.walk.motion")
                                         .font(.title3.bold())
                                         .foregroundColor(.mint)
-                                    Text("Avg:10K Steps")
+                                    Text("Average: \(Int(avgStepCount)) steps")
                                         .font(.caption)
                                 }
                                 Spacer()
@@ -93,14 +99,32 @@ struct DashboardView: View {
                         .padding(.bottom, 12)
                         
                         Chart {
+                            
+                            RuleMark(y: .value("Average", avgStepCount))
+                                .foregroundStyle(Color.secondary)
+                                .lineStyle(.init(lineWidth: 1, dash:[4]))
+                            
                             ForEach(hkManager.stepData) { steps in
                                 BarMark(
                                     x: .value("Date", steps.date, unit: .day),
                                         y: .value("Steps", steps.value)
                                 )
+                                .foregroundStyle(steps.value > avgStepCount ? Color.mint.gradient : Color.gray.gradient)
                             }
                         }
-                        .frame(height: 150)
+                        .chartYAxis {
+                            AxisMarks { value in
+                                AxisGridLine()
+                                    .foregroundStyle(Color.secondary.opacity(0.3))
+                                AxisValueLabel((value.as(Double.self) ?? 0).formatted(.number.notation(.compactName)))
+                            }
+                        }
+                        .chartXAxis {
+                            AxisMarks {
+                                AxisValueLabel(format: .dateTime.month().day())
+                            }
+                        }
+                        .frame(height: 130)
                     }
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
