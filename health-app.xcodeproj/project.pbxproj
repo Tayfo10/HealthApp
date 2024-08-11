@@ -20,6 +20,8 @@
 		C75E4C012C69271500626717 /* ChartDataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4C002C69271500626717 /* ChartDataTypes.swift */; };
 		C75E4C042C6927F800626717 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4C032C6927F800626717 /* Date+Ext.swift */; };
 		C75E4C072C692A5F00626717 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = C75E4C062C692A5F00626717 /* Algorithms */; };
+		C75E4C092C694BCB00626717 /* StepPieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4C082C694BCB00626717 /* StepPieChart.swift */; };
+		C75E4C0B2C69544300626717 /* StepTodayCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4C0A2C69544300626717 /* StepTodayCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,8 @@
 		C75E4BFE2C6926C600626717 /* ChartMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartMath.swift; sourceTree = "<group>"; };
 		C75E4C002C69271500626717 /* ChartDataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDataTypes.swift; sourceTree = "<group>"; };
 		C75E4C032C6927F800626717 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
+		C75E4C082C694BCB00626717 /* StepPieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepPieChart.swift; sourceTree = "<group>"; };
+		C75E4C0A2C69544300626717 /* StepTodayCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepTodayCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +111,8 @@
 				C75E4BF82C68F7E200626717 /* StepBarChart.swift */,
 				C75E4BFE2C6926C600626717 /* ChartMath.swift */,
 				C75E4C002C69271500626717 /* ChartDataTypes.swift */,
+				C75E4C082C694BCB00626717 /* StepPieChart.swift */,
+				C75E4C0A2C69544300626717 /* StepTodayCard.swift */,
 			);
 			path = Charts;
 			sourceTree = "<group>";
@@ -212,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C75E4BF02C65F02200626717 /* HealthDataListView.swift in Sources */,
+				C75E4C0B2C69544300626717 /* StepTodayCard.swift in Sources */,
 				C75E4BE42C64D54000626717 /* DashboardView.swift in Sources */,
 				C75E4BF92C68F7E200626717 /* StepBarChart.swift in Sources */,
 				C75E4BF22C6622F700626717 /* HealthKitPermissionView.swift in Sources */,
@@ -220,6 +227,7 @@
 				C75E4BFF2C6926C600626717 /* ChartMath.swift in Sources */,
 				C75E4BF72C68A7A500626717 /* HealthMetric.swift in Sources */,
 				C75E4C012C69271500626717 /* ChartDataTypes.swift in Sources */,
+				C75E4C092C694BCB00626717 /* StepPieChart.swift in Sources */,
 				C75E4C042C6927F800626717 /* Date+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

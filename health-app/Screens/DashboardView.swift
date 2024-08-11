@@ -54,43 +54,11 @@ struct DashboardView: View {
                     }
                     .pickerStyle(.segmented)
                     
-                    VStack {
-                        HStack{
-                            VStack (alignment: .leading){
-                                Label("Steps", image: "figure.walk.motion")
-                                    .font(.title3.bold())
-                                    .foregroundColor(.mint)
-                                Text("\(Int(hkManager.stepData.last?.value ?? 0))")
-                                    .font(.title2.bold())
-                                    .foregroundStyle(.black)
-                            }
-                            Spacer()
-                            Text("Today")
-                        }
-                        .foregroundStyle(.secondary)
-                        .padding(.bottom, 12)
-                    }
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
+                    StepTodayCard(chartData: hkManager.stepData)
                     
                     StepBarChart(selectedStat: selectedStat, chartData: hkManager.stepData)
                     
-                    VStack(alignment: .leading) {
-                        VStack (alignment: .leading){
-                            Label("Averages", image: "calendar")
-                                .font(.title3.bold())
-                                .foregroundColor(.mint)
-                            Text("Last 28 Days")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        .padding(.bottom, 12)
-                        RoundedRectangle(cornerRadius: 12)
-                            .foregroundStyle(.secondary)
-                            .frame(height: 250)
-                    }
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
+                    StepPieChart(chartData: ChartMath.averageWeekdayCount(for: hkManager.stepData))
                 }
             }
             .padding()

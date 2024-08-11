@@ -15,13 +15,6 @@ struct StepBarChart: View {
     var selectedStat: HealthMetricType
     var chartData: [HealthMetric]
     
-    var avgStepCount: Double {
-        guard chartData.isEmpty else { return 0 }
-        let totalSteps = chartData.reduce(0) {$0 + $1.value }
-        return totalSteps/Double(chartData.count)
-        
-    }
-    
     var selectedHealthMetric: HealthMetric? {
         guard let rawSelectedDate else { return nil }
         let selectedMetric = chartData.first {
@@ -30,6 +23,14 @@ struct StepBarChart: View {
         return selectedMetric
     }
     
+    var avgStepCount: Double {
+        guard !chartData.isEmpty else { return 0 }
+        let totalSteps = chartData.reduce(0) {$0 + $1.value }
+        return totalSteps/Double(chartData.count)
+        
+    }
+    
+
     var body: some View {
         
         VStack {
@@ -39,7 +40,7 @@ struct StepBarChart: View {
                         Label("Steps", image: "figure.walk.motion")
                             .font(.title3.bold())
                             .foregroundColor(.mint)
-                        Text("Average: \(avgStepCount) steps")
+                        Text("Average: \(Int(avgStepCount)) steps")
                             .font(.caption)
                     }
                     Spacer()
