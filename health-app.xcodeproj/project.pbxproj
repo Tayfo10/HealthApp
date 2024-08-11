@@ -14,6 +14,7 @@
 		C75E4BF02C65F02200626717 /* HealthDataListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BEF2C65F02100626717 /* HealthDataListView.swift */; };
 		C75E4BF22C6622F700626717 /* HealthKitPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BF12C6622F700626717 /* HealthKitPermissionView.swift */; };
 		C75E4BF52C6668D200626717 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BF42C6668D200626717 /* HealthKitManager.swift */; };
+		C75E4BF72C68A7A500626717 /* HealthMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BF62C68A7A500626717 /* HealthMetric.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		C75E4BF12C6622F700626717 /* HealthKitPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitPermissionView.swift; sourceTree = "<group>"; };
 		C75E4BF32C66670700626717 /* health-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "health-app.entitlements"; sourceTree = "<group>"; };
 		C75E4BF42C6668D200626717 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		C75E4BF62C68A7A500626717 /* HealthMetric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthMetric.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				C75E4BEF2C65F02100626717 /* HealthDataListView.swift */,
 				C75E4BF12C6622F700626717 /* HealthKitPermissionView.swift */,
 				C75E4BF42C6668D200626717 /* HealthKitManager.swift */,
+				C75E4BF62C68A7A500626717 /* HealthMetric.swift */,
 			);
 			path = "health-app";
 			sourceTree = "<group>";
@@ -153,6 +156,7 @@
 				C75E4BF22C6622F700626717 /* HealthKitPermissionView.swift in Sources */,
 				C75E4BF52C6668D200626717 /* HealthKitManager.swift in Sources */,
 				C75E4BE22C64D54000626717 /* health_appApp.swift in Sources */,
+				C75E4BF72C68A7A500626717 /* HealthMetric.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
