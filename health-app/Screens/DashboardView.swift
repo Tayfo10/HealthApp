@@ -62,7 +62,10 @@ struct DashboardView: View {
                         
                         StepPieChart(chartData: ChartMath.averageWeekdayCount(for: hkManager.stepData))
                     case .weight:
-                        WeightLineChart(selectedStat: selectedStat, chartData: hkManager.weightDiffData)
+                        
+                        WeightLineChart(selectedStat: selectedStat, chartData: hkManager.weightData)
+                        
+                        WeightDiffBarChart(chartData: ChartMath.averageDailyWeightDiffs(for: hkManager.weightDiffData))
                     case .calories:
                         StepTodayCard(chartData: hkManager.stepData)
                     }
@@ -72,8 +75,9 @@ struct DashboardView: View {
             }
             .padding()
             .task {
-                await hkManager.fetchWeights()
                 await hkManager.fetchStepCount()
+                await hkManager.fetchWeights()
+                await hkManager.fetchWeightDifferential()
                 isShowingPermissionViewSheet = !hasSeenPermissionView
             }
             .navigationTitle("Dashboard")
