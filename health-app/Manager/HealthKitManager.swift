@@ -16,6 +16,11 @@ import Observation
     
     let types: Set = [HKQuantityType(.stepCount), HKQuantityType(.activeEnergyBurned), HKQuantityType(.bodyMass)]
     
+    var stepData:[HealthMetric] = []
+    var weightData:[HealthMetric] = []
+    var caloriesData:[HealthMetric] = []
+    
+    
     func fetchStepCount() async {
         
         let calendar = Calendar.current
@@ -34,7 +39,18 @@ import Observation
             anchorDate: endDate,
             intervalComponents: everyDay)
         
-        let stepCounts = try! await sumOfStepsQuery.result(for: store)
+        do {
+            
+            let stepCounts = try await sumOfStepsQuery.result(for: store)
+            stepData = stepCounts.statistics().map {
+                .init(date: $0.startDate, value: $0.sumQuantity()?.doubleValue(for: .count()) ?? 0)
+            }
+            
+        } catch {
+            
+        }
+        
+        
         
     }
     
@@ -56,7 +72,18 @@ import Observation
             anchorDate: endDate,
             intervalComponents: everyDay)
         
-        let weights = try! await weightQuery.result(for: store)
+        do {
+            
+            let weights = try await weightQuery.result(for: store)
+            weightData = weights.statistics().map {
+                .init(date: $0.startDate, value: $0.mostRecentQuantity()?.doubleValue(for: .pound()) ?? 0)
+            }
+            
+        } catch {
+            
+        }
+        
+        
            
     }
     
@@ -78,11 +105,18 @@ import Observation
             anchorDate: endDate,
             intervalComponents: everyDay)
         
-        let caloriesCount = try! await sumOfCaloriesQuery.result(for: store)
         
-        for calories in caloriesCount.statistics() {
-            print(calories.sumQuantity() ?? 0)
+        
+        do {
+            let caloriesCount = try await sumOfCaloriesQuery.result(for: store)
+            caloriesData = caloriesCount.statistics().map {
+                .init(date: $0.startDate, value: $0.sumQuantity()?.doubleValue(for: .pound()) ?? 0)
+            }
+            
+        } catch {
+            
         }
+        
         
     }
 
