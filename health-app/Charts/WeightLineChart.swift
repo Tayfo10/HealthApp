@@ -13,6 +13,10 @@ struct WeightLineChart: View {
     
     var selectedStat: HealthMetricType
     var chartData: [HealthMetric]
+    
+    var minValue: Double {
+        chartData.map { $0.value }.min() ?? 0
+    }
    
     var body: some View {
         
@@ -35,18 +39,40 @@ struct WeightLineChart: View {
             .padding(.bottom, 12)
             
             Chart {
+                
+                
+                
+                
                 ForEach(chartData) { weight in
                     
                     AreaMark(x: .value("day", weight.date, unit: .day),
-                             y: .value("value", weight.value)
-                    )
-                    .foregroundStyle(Gradient(colors: [.purple.opacity(0.5),.clear]))
+                             yStart: .value("value", weight.value),
+                             yEnd: .value("minvalue", minValue))
+                    .foregroundStyle(Gradient(colors: [.purple.opacity(0.5), .clear]))
                     
                     LineMark(x: .value("day", weight.date, unit: .day), y: .value("Value", weight.value))
                         .foregroundStyle(Color(.purple))
+                        .symbol(.circle)
                 }
             }
+            
             .frame(height: 150)
+            .chartYScale(domain: .automatic(includesZero: false))
+            .chartYAxis {
+                AxisMarks { value in
+                    AxisGridLine()
+                        .foregroundStyle(Color.secondary.opacity(0.3))
+                    AxisValueLabel()
+                }
+            }
+            .chartXAxis {
+                AxisMarks {
+                    AxisValueLabel(format: .dateTime.month().day())
+                }
+            }
+            
+            
+            .frame(height: 130)
             
         }
         .padding()
