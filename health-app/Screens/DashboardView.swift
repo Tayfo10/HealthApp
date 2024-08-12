@@ -54,16 +54,30 @@ struct DashboardView: View {
                     }
                     .pickerStyle(.segmented)
                     
-                    StepTodayCard(chartData: hkManager.stepData)
+                    switch selectedStat {
+                    case .steps:
+                        StepTodayCard(chartData: hkManager.stepData)
+                        
+                        StepBarChart(selectedStat: selectedStat, chartData: hkManager.stepData)
+                        
+                        StepPieChart(chartData: ChartMath.averageWeekdayCount(for: hkManager.stepData))
+                    case .weight:
+                        
+                        WeightLineChart(selectedStat: selectedStat, chartData: hkManager.weightData)
+                        
+                        WeightDiffBarChart(chartData: ChartMath.averageDailyWeightDiffs(for: hkManager.weightDiffData))
+                    case .calories:
+                        StepTodayCard(chartData: hkManager.stepData)
+                    }
                     
-                    StepBarChart(selectedStat: selectedStat, chartData: hkManager.stepData)
                     
-                    StepPieChart(chartData: ChartMath.averageWeekdayCount(for: hkManager.stepData))
                 }
             }
             .padding()
             .task {
                 await hkManager.fetchStepCount()
+                await hkManager.fetchWeights()
+                await hkManager.fetchWeightDifferential()
                 isShowingPermissionViewSheet = !hasSeenPermissionView
             }
             .navigationTitle("Dashboard")

@@ -35,5 +35,5 @@ struct StepTodayCard: View {
 }
 
 #Preview {
-    StepTodayCard(chartData: HealthMetric.mockData)
+    StepTodayCard(chartData: MockData.steps)
 }
