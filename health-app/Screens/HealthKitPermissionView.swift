@@ -16,11 +16,11 @@ struct HealthKitPermissionView: View {
     @Binding var hasSeen: Bool
     
     var description = """
-
+    
     This app displays your step, weight and calory data in interactive charts.
     
     New data regarding these metrics may also be added to Apple Health from this app. Your data is private and secure.
-
+    
     """
     
     var body: some View {
@@ -51,13 +51,11 @@ struct HealthKitPermissionView: View {
                                  readTypes: hkmanager.types,
                                  trigger: isShowingHealthKitPermission) { result in
             switch result {
-            
             case .success(_):
                 dismiss()
             case .failure(_):
                 dismiss()
             }
-            
         }
     }
 }

@@ -19,6 +19,16 @@ struct MockData {
         return array
     }
     
+    static var calories: [HealthMetric] {
+        var array: [HealthMetric] = []
+        
+        for i in 0..<28 {
+            let metric = HealthMetric(date: Calendar.current.date(byAdding: .day, value: -i, to: .now)!, value: .random(in: 200...600))
+            array.append(metric)
+        }
+        return array
+    }
+    
     static var weights: [HealthMetric] {
         var array: [HealthMetric] = []
         

@@ -56,21 +56,22 @@ struct DashboardView: View {
                     
                     switch selectedStat {
                     case .steps:
+                        
                         StepTodayCard(chartData: hkManager.stepData)
-                        
                         StepBarChart(selectedStat: selectedStat, chartData: hkManager.stepData)
-                        
                         StepPieChart(chartData: ChartMath.averageWeekdayCount(for: hkManager.stepData))
+                        
                     case .weight:
                         
                         WeightLineChart(selectedStat: selectedStat, chartData: hkManager.weightData)
-                        
                         WeightDiffBarChart(chartData: ChartMath.averageDailyWeightDiffs(for: hkManager.weightDiffData))
+                        
                     case .calories:
-                        StepTodayCard(chartData: hkManager.stepData)
+                        
+                        CaloriesTodayCard(chartData: hkManager.caloriesData)
+                        CaloriesLineChart(selectedStat: selectedStat, chartData: hkManager.caloriesData)
+                        CaloriesBarChart(selectedStat: selectedStat, chartData: hkManager.caloriesData)
                     }
-                    
-                    
                 }
             }
             .padding()
@@ -78,6 +79,7 @@ struct DashboardView: View {
                 await hkManager.fetchStepCount()
                 await hkManager.fetchWeights()
                 await hkManager.fetchWeightDifferential()
+                await hkManager.fetchCalories()
                 isShowingPermissionViewSheet = !hasSeenPermissionView
             }
             .navigationTitle("Dashboard")
@@ -93,9 +95,6 @@ struct DashboardView: View {
         }
         .tint(selectedStat.tintColor)
     }
-    
-    
-    
 }
 
 #Preview {

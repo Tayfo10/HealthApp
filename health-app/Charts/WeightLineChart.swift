@@ -20,15 +20,21 @@ struct WeightLineChart: View {
         }
     }
     
+    var avgWeight: Double {
+        guard !chartData.isEmpty else { return 0 }
+        let totalWeight = chartData.reduce(0) {$0 + $1.value }
+        return totalWeight/Double(chartData.count)
+        
+    }
+    
     var selectedStat: HealthMetricType
     var chartData: [HealthMetric]
     
     var minValue: Double {
         chartData.map { $0.value }.min() ?? 0
     }
-   
+    
     var body: some View {
-        
         VStack {
             NavigationLink(value: selectedStat) {
                 HStack{
@@ -36,7 +42,7 @@ struct WeightLineChart: View {
                         Label("Weight", image: "weightlogo")
                             .font(.title3.bold())
                             .foregroundColor(.purple)
-                        Text("Average: 72.4kg")
+                        Text("Average of 28 days: \(avgWeight.formatted(.number.precision(.fractionLength(1)))) pounds")
                             .font(.caption)
                     }
                     Spacer()
@@ -80,9 +86,7 @@ struct WeightLineChart: View {
                     AxisValueLabel(format: .dateTime.month().day())
                 }
             }
-            
-            
-            .frame(height: 130)
+            .frame(height: 170)
             
         }
         .padding()
@@ -107,8 +111,6 @@ struct WeightLineChart: View {
         )
     }
 }
-
-
 
 #Preview {
     WeightLineChart(selectedStat: .weight, chartData: MockData.weights)

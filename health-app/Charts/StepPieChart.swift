@@ -21,7 +21,7 @@ struct StepPieChart: View {
             return rawSelectedChartValue <= total
         }
     }
-    
+
     var chartData: [WeekdayChartData]
     
     var body: some View {
@@ -46,7 +46,6 @@ struct StepPieChart: View {
                     .foregroundStyle(.mint.gradient)
                     .cornerRadius(4)
                     .opacity(selectedWeekday?.date.weekdayInt == weekday.date.weekdayInt ? 1.0 : 0.4)
-                        
                 }
             }
             .chartAngleSelection(value: $rawSelectedChartValue.animation(.easeInOut))
@@ -67,14 +66,11 @@ struct StepPieChart: View {
                             .position(x:frame.midX, y:frame.midY)
                         }
                     }
-                    
                 }
-                
             }
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
-        
     }
 }
 

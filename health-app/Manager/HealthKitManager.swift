@@ -11,7 +11,6 @@ import Observation
 
 @Observable class HealthKitManager {
     
-    
     let store = HKHealthStore()
     
     let types: Set = [HKQuantityType(.stepCount), HKQuantityType(.activeEnergyBurned), HKQuantityType(.bodyMass)]
@@ -21,19 +20,15 @@ import Observation
     var weightDiffData: [HealthMetric] = []
     var caloriesData:[HealthMetric] = []
     
-    
     func fetchStepCount() async {
         
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: .now)
         let endDate = calendar.date(byAdding: .day, value: 1, to: today)!
         let startDate = calendar.date(byAdding: .day, value: -28, to: endDate)!
-        
         let queryPredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
         let samplePredicate = HKSamplePredicate.quantitySample(type: HKQuantityType(.stepCount), predicate:queryPredicate)
-        
         let everyDay = DateComponents(day:1)
-        
         let sumOfStepsQuery = HKStatisticsCollectionQueryDescriptor(
             predicate: samplePredicate,
             options: .cumulativeSum,
@@ -46,13 +41,9 @@ import Observation
             stepData = stepCounts.statistics().map {
                 .init(date: $0.startDate, value: $0.sumQuantity()?.doubleValue(for: .count()) ?? 0)
             }
-            
         } catch {
             
         }
-        
-        
-        
     }
     
     func fetchWeights() async {
@@ -61,12 +52,9 @@ import Observation
         let today = calendar.startOfDay(for: .now)
         let endDate = calendar.date(byAdding: .day, value: 1, to: today)!
         let startDate = calendar.date(byAdding: .day, value: -28, to: endDate)!
-        
         let queryPredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
         let samplePredicate = HKSamplePredicate.quantitySample(type: HKQuantityType(.bodyMass), predicate:queryPredicate)
-        
         let everyDay = DateComponents(day:1)
-        
         let weightQuery = HKStatisticsCollectionQueryDescriptor(
             predicate: samplePredicate,
             options: .mostRecent,
@@ -74,18 +62,14 @@ import Observation
             intervalComponents: everyDay)
         
         do {
-            
+    
             let weights = try await weightQuery.result(for: store)
             weightData = weights.statistics().map {
                 .init(date: $0.startDate, value: $0.mostRecentQuantity()?.doubleValue(for: .pound()) ?? 0)
             }
-            
         } catch {
             
         }
-        
-        
-           
     }
     
     func fetchWeightDifferential() async {
@@ -94,12 +78,9 @@ import Observation
         let today = calendar.startOfDay(for: .now)
         let endDate = calendar.date(byAdding: .day, value: 1, to: today)!
         let startDate = calendar.date(byAdding: .day, value: -29, to: endDate)!
-        
         let queryPredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
         let samplePredicate = HKSamplePredicate.quantitySample(type: HKQuantityType(.bodyMass), predicate:queryPredicate)
-        
         let everyDay = DateComponents(day:1)
-        
         let weightQuery = HKStatisticsCollectionQueryDescriptor(
             predicate: samplePredicate,
             options: .mostRecent,
@@ -116,9 +97,6 @@ import Observation
         } catch {
             
         }
-        
-        
-           
     }
     
     func fetchCalories() async {
@@ -127,80 +105,69 @@ import Observation
         let today = calendar.startOfDay(for: .now)
         let endDate = calendar.date(byAdding: .day, value: 1, to: today)!
         let startDate = calendar.date(byAdding: .day, value: -28, to: endDate)!
-        
         let queryPredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate)
         let samplePredicate = HKSamplePredicate.quantitySample(type: HKQuantityType(.activeEnergyBurned), predicate:queryPredicate)
-        
         let everyDay = DateComponents(day:1)
-        
         let sumOfCaloriesQuery = HKStatisticsCollectionQueryDescriptor(
             predicate: samplePredicate,
             options: .cumulativeSum,
             anchorDate: endDate,
             intervalComponents: everyDay)
-        
-        
-        
+    
         do {
             let caloriesCount = try await sumOfCaloriesQuery.result(for: store)
             caloriesData = caloriesCount.statistics().map {
-                .init(date: $0.startDate, value: $0.sumQuantity()?.doubleValue(for: .pound()) ?? 0)
+                .init(date: $0.startDate, value: $0.sumQuantity()?.doubleValue(for: .kilocalorie()) ?? 0)
             }
-            
         } catch {
             
         }
-        
-        
-        
-        
-        
-        
     }
-    
+
     func addStepData(for date: Date, value: Double) async {
-        
         let stepQuantity = HKQuantity(unit: .count(), doubleValue: value)
         let stepSample = HKQuantitySample(type: HKQuantityType(.stepCount), quantity: stepQuantity, start: date, end: date)
-        
         try! await store.save(stepSample)
     }
     
     func addWeightData(for date: Date, value: Double) async {
-        
         let weightQuantity = HKQuantity(unit: .pound(), doubleValue: value)
         let weightSample = HKQuantitySample(type: HKQuantityType(.bodyMass), quantity: weightQuantity, start: date, end: date)
-        
         try! await store.save(weightSample)
     }
-
     
-// This function may be used later in the project. Used to inject mockData.
-//    func addSimulatorData() async {
-//        
-//        var mockSamples: [HKQuantitySample] = []
-//        
-//        for i in 0..<28 {
-//            
-//            let startDate = Calendar.current.date(byAdding: .day, value: -i, to: .now)!
-//            let endDate = Calendar.current.date(byAdding: .second, value: 1, to: startDate)!
-//            
-//            let stepQuantity = HKQuantity(unit: .count(), doubleValue: .random(in: 4_000...20_000))
-//            let weightQuantity = HKQuantity(unit: .pound(), doubleValue: .random(in: 160 + Double(i/3)...165 + Double(i/3)))
-//            let caloriesQuantity = HKQuantity(unit: .largeCalorie(), doubleValue: .random(in: 100...900))
-//            
-//            let stepSample = HKQuantitySample(type: HKQuantityType(.stepCount), quantity: stepQuantity, start: startDate, end: endDate)
-//            let weightSample = HKQuantitySample(type: HKQuantityType(.bodyMass), quantity: weightQuantity, start: startDate, end: endDate)
-//            let caloriesSample = HKQuantitySample(type: HKQuantityType(.activeEnergyBurned), quantity: caloriesQuantity, start: startDate, end: endDate)
-//            
-//            mockSamples.append(stepSample)
-//            mockSamples.append(weightSample)
-//            mockSamples.append(caloriesSample)
-//            
-//        }
-//        
-//        try! await store.save(mockSamples)
-//        
-//    }
+    func addCaloryData(for date: Date, value: Double) async {
+        let caloryQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: value)
+        let calorySample = HKQuantitySample(type: HKQuantityType(.activeEnergyBurned), quantity: caloryQuantity, start: date, end: date)
+        try! await store.save(calorySample)
+    }
+    
+    // This function may be used later in the project. Used to inject mockData.
+    //    func addSimulatorData() async {
+    //
+    //        var mockSamples: [HKQuantitySample] = []
+    //
+    //        for i in 0..<28 {
+    //
+    //            let startDate = Calendar.current.date(byAdding: .day, value: -i, to: .now)!
+    //            let endDate = Calendar.current.date(byAdding: .second, value: 1, to: startDate)!
+    //
+    //            let stepQuantity = HKQuantity(unit: .count(), doubleValue: .random(in: 4_000...20_000))
+    //            let weightQuantity = HKQuantity(unit: .pound(), doubleValue: .random(in: 160 + Double(i/3)...165 + Double(i/3)))
+    //            let caloriesQuantity = HKQuantity(unit: .largeCalorie(), doubleValue: .random(in: 100...900))
+    //
+    //            let stepSample = HKQuantitySample(type: HKQuantityType(.stepCount), quantity: stepQuantity, start: startDate, end: endDate)
+    //            let weightSample = HKQuantitySample(type: HKQuantityType(.bodyMass), quantity: weightQuantity, start: startDate, end: endDate)
+    //            let caloriesSample = HKQuantitySample(type: HKQuantityType(.activeEnergyBurned), quantity: caloriesQuantity, start: startDate, end: endDate)
+    //
+    //            mockSamples.append(stepSample)
+    //            mockSamples.append(weightSample)
+    //            mockSamples.append(caloriesSample)
+    //
+    //        }
+    //
+    //        try! await store.save(mockSamples)
+    //
+    //    }
     
 }

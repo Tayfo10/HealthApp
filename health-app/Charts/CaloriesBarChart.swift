@@ -1,14 +1,14 @@
 //
-//  StepBarChart.swift
+//  CaloriesBarChart.swift
 //  health-app
 //
-//  Created by Tayfun Sener on 11.08.2024.
+//  Created by Tayfun Sener on 13.08.2024.
 //
 
 import SwiftUI
 import Charts
 
-struct StepBarChart: View {
+struct CaloriesBarChart: View {
     
     @State private var rawSelectedDate: Date?
     
@@ -23,10 +23,11 @@ struct StepBarChart: View {
         return selectedMetric
     }
     
-    var avgStepCount: Double {
+    var avgCaloryCount: Double {
         guard !chartData.isEmpty else { return 0 }
-        let totalSteps = chartData.reduce(0) {$0 + $1.value }
-        return totalSteps/Double(chartData.count)
+        let totalCalories = chartData.reduce(0) {$0 + $1.value }
+        return totalCalories/Double(chartData.count)
+        
     }
     
     var body: some View {
@@ -35,15 +36,15 @@ struct StepBarChart: View {
             NavigationLink(value: selectedStat) {
                 HStack{
                     VStack (alignment: .leading){
-                        Label("Steps", image: "figure.walk.motion")
+                        Label("Calories", image: "energylogo")
                             .font(.title3.bold())
-                            .foregroundColor(.mint)
-                        Text("Average: \(Int(avgStepCount)) steps")
+                            .foregroundColor(.green)
+                        Text("Average: \(Int(avgCaloryCount)) kcal")
                             .font(.caption)
                     }
                     Spacer()
                     Image(systemName: "chevron.right")
-                        .foregroundStyle(.mint)
+                        .foregroundStyle(.green)
                 }
             }
             .foregroundStyle(.secondary)
@@ -56,17 +57,18 @@ struct StepBarChart: View {
                         .offset(y: -10)
                         .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {annotationView}
                     }
-                RuleMark(y: .value("Average", avgStepCount))
+                
+                RuleMark(y: .value("Average", avgCaloryCount))
                     .foregroundStyle(Color.secondary)
                     .lineStyle(.init(lineWidth: 1, dash:[4]))
                 
-                ForEach(chartData) { steps in
+                ForEach(chartData) { calories in
                     BarMark(
-                        x: .value("Date", steps.date, unit: .day),
-                        y: .value("Steps", steps.value)
+                        x: .value("Date", calories.date, unit: .day),
+                        y: .value("Steps", calories.value)
                     )
-                    .foregroundStyle(steps.value > avgStepCount ? Color.mint.gradient : Color.gray.gradient)
-                    .opacity(rawSelectedDate == nil || steps.date == selectedHealthMetric?.date ? 1.0 : 0.3)
+                    .foregroundStyle(calories.value > avgCaloryCount ? Color.green.gradient : Color.gray.gradient)
+                    .opacity(rawSelectedDate == nil || calories.date == selectedHealthMetric?.date ? 1.0 : 0.3)
                 }
             }
             .chartYAxis {
@@ -95,17 +97,17 @@ struct StepBarChart: View {
                 .foregroundStyle(.secondary)
             Text(selectedHealthMetric?.value ?? 0, format: .number.precision(.fractionLength(0)))
                 .fontWeight(.heavy)
-                .foregroundStyle(.mint)
+                .foregroundStyle(.green)
         }
         .padding(12)
         .background(
             RoundedRectangle(cornerRadius: 4)
                 .fill(Color(.secondarySystemBackground))
-                .shadow(color: .mint.opacity(0.2), radius: 2, x:2, y:2)
+                .shadow(color: .green.opacity(0.2), radius: 2, x:2, y:2)
         )
     }
 }
 
 #Preview {
-    StepBarChart(selectedStat: .steps, chartData: MockData.steps)
+    CaloriesBarChart(selectedStat: .calories, chartData: MockData.calories)
 }

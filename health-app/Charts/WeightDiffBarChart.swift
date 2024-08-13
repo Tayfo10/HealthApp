@@ -11,7 +11,7 @@ import Charts
 struct WeightDiffBarChart: View {
     
     @State private var rawSelectedDate: Date?
-
+    
     var chartData: [WeekdayChartData]
     
     var selectedData: WeekdayChartData? {
@@ -34,11 +34,10 @@ struct WeightDiffBarChart: View {
                         .font(.caption)
                 }
                 Spacer()
-                
             }
             .foregroundStyle(.secondary)
             .padding(.bottom, 12)
-            
+    
             Chart {
                 if let selectedData {
                     RuleMark(x: .value("Selected Data", selectedData.date, unit: .day))
@@ -54,7 +53,6 @@ struct WeightDiffBarChart: View {
                         y: .value("Steps", weightDiff.value)
                     )
                     .foregroundStyle(weightDiff.value >= 0 ? Color.purple.gradient : Color.gray.gradient)
-                    
                 }
             }
             .chartYAxis {
@@ -65,20 +63,15 @@ struct WeightDiffBarChart: View {
                 }
             }
             .chartXAxis {
-                
                 AxisMarks(values: .stride(by: .day)){
                     AxisValueLabel(format: .dateTime.weekday(), centered: true)
                 }
-            
             }
             .chartXSelection(value: $rawSelectedDate.animation(.easeInOut))
-            
-            .frame(height: 130)
+            .frame(height: 200)
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
-        
-        
     }
     
     var annotationView: some View {
@@ -98,7 +91,6 @@ struct WeightDiffBarChart: View {
         )
     }
 }
-
 
 #Preview {
     WeightDiffBarChart(chartData: MockData.weightDiffs)

@@ -1,24 +1,25 @@
 //
-//  StepTodayCard.swift
+//  CaloriesTodayCard.swift
 //  health-app
 //
-//  Created by Tayfun Sener on 11.08.2024.
+//  Created by Tayfun Sener on 13.08.2024.
 //
 
 import SwiftUI
 
-struct StepTodayCard: View {
+struct CaloriesTodayCard: View {
     
     var chartData: [HealthMetric]
+    
     var body: some View {
         
         VStack {
             HStack{
                 VStack (alignment: .leading){
-                    Label("Steps", image: "figure.walk.motion")
+                    Label("Calories Burned", image: "calorylogo")
                         .font(.title3.bold())
-                        .foregroundColor(.mint)
-                    Text("\(Int(chartData.last?.value ?? 0))")
+                        .foregroundColor(.green)
+                    Text("\(Int(chartData.last?.value ?? 0)) kcal")
                         .font(.title2.bold())
                         .foregroundStyle(.black)
                 }
@@ -34,5 +35,5 @@ struct StepTodayCard: View {
 }
 
 #Preview {
-    StepTodayCard(chartData: MockData.steps)
+    CaloriesTodayCard(chartData: MockData.calories)
 }

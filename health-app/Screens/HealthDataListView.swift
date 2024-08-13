@@ -49,7 +49,7 @@ struct HealthDataListView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 18)
-                    
+                
                 Text(data.value, format: .number.precision(.fractionLength(fractionDecider)))
                     .frame(width:60)
             }
@@ -69,7 +69,6 @@ struct HealthDataListView: View {
         NavigationStack {
             Form {
                 DatePicker("Date", selection: $addDataDate, displayedComponents: .date)
-                
                 HStack {
                     Text(metric.title)
                     Spacer()
@@ -78,7 +77,6 @@ struct HealthDataListView: View {
                         .frame(width: 150)
                         .keyboardType(metric == .steps || metric == .calories ? .numberPad : .decimalPad)
                 }
-                
             }
             .navigationTitle(metric.title)
             .toolbar {
@@ -96,13 +94,11 @@ struct HealthDataListView: View {
                                 await hkManager.fetchWeightDifferential()
                                 isShowingAddData = false
                             case .calories:
-                                await hkManager.addStepData(for: addDataDate, value: Double(valueToAdd)!)
+                                await hkManager.addCaloryData(for: addDataDate, value: Double(valueToAdd)!)
                                 await hkManager.fetchCalories()
                                 isShowingAddData = false
                             }
-                            
                         }
-                        
                     }
                 }
                 ToolbarItem(placement: .topBarLeading) {
@@ -113,7 +109,6 @@ struct HealthDataListView: View {
             }
         }
     }
-        
 }
 
 #Preview {
