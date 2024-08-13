@@ -16,6 +16,8 @@ struct HealthDataListView: View {
     @State private var addDataDate: Date = .now
     @State private var valueToAdd: String = ""
     
+    
+    
     var metric: HealthMetricType
     
     var listData: [HealthMetric] {
@@ -85,18 +87,38 @@ struct HealthDataListView: View {
                         Task{
                             switch metric {
                             case .steps:
-                                await hkManager.addStepData(for: addDataDate, value: Double(valueToAdd)!)
-                                await hkManager.fetchStepCount()
-                                isShowingAddData = false
+                                do {
+                                    try await hkManager.addStepData(for: addDataDate, value: Double(valueToAdd)!)
+                                    try await hkManager.fetchStepCount()
+                                    isShowingAddData = false
+                                } catch STError.sharingDenied(let quantityType) {
+                                    print("Sharing denied for \(quantityType)")
+                                } catch {
+                                    print("Data list view unable to complete request")
+                                }
+                                
                             case .weight:
-                                await hkManager.addWeightData(for: addDataDate, value: Double(valueToAdd)!)
-                                await hkManager.fetchWeights()
-                                await hkManager.fetchWeightDifferential()
-                                isShowingAddData = false
+                                do {
+                                    try await hkManager.addWeightData(for: addDataDate, value: Double(valueToAdd)!)
+                                    try await hkManager.fetchWeights()
+                                    try await hkManager.fetchWeightDifferential()
+                                    isShowingAddData = false
+                                } catch STError.sharingDenied(let quantityType) {
+                                    print("Sharing denied for \(quantityType)")
+                                } catch {
+                                    print("Data list view unable to complete request")
+                                }
                             case .calories:
-                                await hkManager.addCaloryData(for: addDataDate, value: Double(valueToAdd)!)
-                                await hkManager.fetchCalories()
-                                isShowingAddData = false
+                                do {
+                                    try await hkManager.addCaloryData(for: addDataDate, value: Double(valueToAdd)!)
+                                    try await hkManager.fetchCalories()
+                                    isShowingAddData = false
+                                } catch STError.sharingDenied(let quantityType) {
+                                    print("Sharing denied for \(quantityType)")
+                                } catch {
+                                    print("Data list view unable to complete request")
+                                }
+                                
                             }
                         }
                     }

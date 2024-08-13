@@ -13,7 +13,7 @@ struct HealthKitPermissionView: View {
     @Environment(HealthKitManager.self) private var hkmanager
     @Environment(\.dismiss) private var dismiss
     @State private var isShowingHealthKitPermission = false
-    @Binding var hasSeen: Bool
+    
     
     var description = """
     
@@ -43,9 +43,7 @@ struct HealthKitPermissionView: View {
         }
         .padding(30)
         .interactiveDismissDisabled()
-        .onAppear {
-            hasSeen = true
-        }
+        
         .healthDataAccessRequest(store: hkmanager.store,
                                  shareTypes: hkmanager.types,
                                  readTypes: hkmanager.types,
@@ -61,6 +59,6 @@ struct HealthKitPermissionView: View {
 }
 
 #Preview {
-    HealthKitPermissionView(hasSeen: .constant(true))
+    HealthKitPermissionView()
         .environment(HealthKitManager())
 }
