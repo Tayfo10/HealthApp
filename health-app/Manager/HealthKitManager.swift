@@ -9,6 +9,13 @@ import Foundation
 import HealthKit
 import Observation
 
+enum STError: Error {
+    case authNotDetermined
+    case noData
+    case unabletoCompleteRequest
+    case sharingDenied(quantityType: String)
+}
+
 @Observable class HealthKitManager {
     
     let store = HKHealthStore()
@@ -20,7 +27,12 @@ import Observation
     var weightDiffData: [HealthMetric] = []
     var caloriesData:[HealthMetric] = []
     
-    func fetchStepCount() async {
+    func fetchStepCount() async throws {
+        guard store.authorizationStatus(for: HKQuantityType(.stepCount)) != .notDetermined else {
+            throw STError.authNotDetermined
+        }
+        
+        
         
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: .now)
@@ -41,12 +53,18 @@ import Observation
             stepData = stepCounts.statistics().map {
                 .init(date: $0.startDate, value: $0.sumQuantity()?.doubleValue(for: .count()) ?? 0)
             }
+        } catch HKError.errorNoData {
+            throw STError.noData
         } catch {
-            
+            throw STError.unabletoCompleteRequest
         }
     }
     
-    func fetchWeights() async {
+    func fetchWeights() async throws{
+        
+        guard store.authorizationStatus(for: HKQuantityType(.bodyMass)) != .notDetermined else {
+            throw STError.authNotDetermined
+        }
         
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: .now)
@@ -67,12 +85,18 @@ import Observation
             weightData = weights.statistics().map {
                 .init(date: $0.startDate, value: $0.mostRecentQuantity()?.doubleValue(for: .pound()) ?? 0)
             }
+        } catch HKError.errorNoData {
+            throw STError.noData
         } catch {
-            
+            throw STError.unabletoCompleteRequest
         }
     }
     
-    func fetchWeightDifferential() async {
+    func fetchWeightDifferential() async throws {
+        
+        guard store.authorizationStatus(for: HKQuantityType(.bodyMass)) != .notDetermined else {
+            throw STError.authNotDetermined
+        }
         
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: .now)
@@ -94,12 +118,18 @@ import Observation
                 .init(date: $0.startDate, value: $0.mostRecentQuantity()?.doubleValue(for: .pound()) ?? 0)
             }
             
+        } catch HKError.errorNoData {
+            throw STError.noData
         } catch {
-            
+            throw STError.unabletoCompleteRequest
         }
     }
     
-    func fetchCalories() async {
+    func fetchCalories() async throws {
+        
+        guard store.authorizationStatus(for: HKQuantityType(.activeEnergyBurned)) != .notDetermined else {
+            throw STError.authNotDetermined
+        }
         
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: .now)
@@ -119,27 +149,78 @@ import Observation
             caloriesData = caloriesCount.statistics().map {
                 .init(date: $0.startDate, value: $0.sumQuantity()?.doubleValue(for: .kilocalorie()) ?? 0)
             }
+        } catch HKError.errorNoData {
+            throw STError.noData
         } catch {
-            
+            throw STError.unabletoCompleteRequest
         }
     }
 
-    func addStepData(for date: Date, value: Double) async {
+    func addStepData(for date: Date, value: Double) async throws {
+        let status = store.authorizationStatus(for: HKQuantityType(.stepCount))
+        switch status {
+        case .notDetermined:
+            STError.authNotDetermined
+        case .sharingDenied:
+            STError.sharingDenied(quantityType: "step count")
+        case .sharingAuthorized:
+            break
+        @unknown default:
+            break
+        }
+        
         let stepQuantity = HKQuantity(unit: .count(), doubleValue: value)
         let stepSample = HKQuantitySample(type: HKQuantityType(.stepCount), quantity: stepQuantity, start: date, end: date)
-        try! await store.save(stepSample)
+        do {
+            try await store.save(stepSample)
+        } catch {
+            throw STError.unabletoCompleteRequest
+        }
+        
     }
     
-    func addWeightData(for date: Date, value: Double) async {
+    func addWeightData(for date: Date, value: Double) async throws {
+        let status = store.authorizationStatus(for: HKQuantityType(.bodyMass))
+        switch status {
+        case .notDetermined:
+            STError.authNotDetermined
+        case .sharingDenied:
+            STError.sharingDenied(quantityType: "weight")
+        case .sharingAuthorized:
+            break
+        @unknown default:
+            break
+        }
         let weightQuantity = HKQuantity(unit: .pound(), doubleValue: value)
         let weightSample = HKQuantitySample(type: HKQuantityType(.bodyMass), quantity: weightQuantity, start: date, end: date)
-        try! await store.save(weightSample)
+        do {
+            try await store.save(weightSample)
+        } catch {
+            throw STError.unabletoCompleteRequest
+        }
+        
     }
     
-    func addCaloryData(for date: Date, value: Double) async {
+    func addCaloryData(for date: Date, value: Double) async throws{
+        let status = store.authorizationStatus(for: HKQuantityType(.activeEnergyBurned))
+        switch status {
+        case .notDetermined:
+            STError.authNotDetermined
+        case .sharingDenied:
+            STError.sharingDenied(quantityType: "calories")
+        case .sharingAuthorized:
+            break
+        @unknown default:
+            break
+        }
         let caloryQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: value)
         let calorySample = HKQuantitySample(type: HKQuantityType(.activeEnergyBurned), quantity: caloryQuantity, start: date, end: date)
-        try! await store.save(calorySample)
+        do {
+            try await store.save(calorySample)
+        } catch {
+            throw STError.unabletoCompleteRequest
+        }
+        
     }
     
     // This function may be used later in the project. Used to inject mockData.
