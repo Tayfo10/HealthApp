@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HealthDataListView: View {
     
+    @Environment(HealthKitManager.self) private var hkManager
+    
     @State private var isShowingAddData = false
     
     @State private var addDataDate: Date = .now
@@ -16,13 +18,40 @@ struct HealthDataListView: View {
     
     var metric: HealthMetricType
     
+    var listData: [HealthMetric] {
+        switch metric {
+        case .steps:
+            hkManager.stepData
+        case .weight:
+            hkManager.weightData
+        case .calories:
+            hkManager.caloriesData
+        }
+    }
+    
+    var fractionDecider: Int {
+        switch metric {
+        case .steps:
+            0
+        case .weight:
+            2
+        case .calories:
+            1
+        }
+    }
+    
     var body: some View {
-        List(0..<28) {i in
+        List(listData.reversed()) {data in
             HStack {
-                Text(Date(), format: .dateTime.year().month().day())
+                Text(data.date, format: .dateTime.year().month().day())
                 Spacer()
                 Image("arrow.forward.square.fill" + ".\(metric)")
-                Text(10000, format: .number.precision(.fractionLength(metric == .steps || metric == .calories ? 0 : 2)))
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 18)
+                    
+                Text(data.value, format: .number.precision(.fractionLength(fractionDecider)))
+                    .frame(width:60)
             }
         }
         .navigationTitle(metric.title)
@@ -55,7 +84,25 @@ struct HealthDataListView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add Data") {
-                        // Do code later
+                        Task{
+                            switch metric {
+                            case .steps:
+                                await hkManager.addStepData(for: addDataDate, value: Double(valueToAdd)!)
+                                await hkManager.fetchStepCount()
+                                isShowingAddData = false
+                            case .weight:
+                                await hkManager.addWeightData(for: addDataDate, value: Double(valueToAdd)!)
+                                await hkManager.fetchWeights()
+                                await hkManager.fetchWeightDifferential()
+                                isShowingAddData = false
+                            case .calories:
+                                await hkManager.addStepData(for: addDataDate, value: Double(valueToAdd)!)
+                                await hkManager.fetchCalories()
+                                isShowingAddData = false
+                            }
+                            
+                        }
+                        
                     }
                 }
                 ToolbarItem(placement: .topBarLeading) {
@@ -71,4 +118,5 @@ struct HealthDataListView: View {
 
 #Preview {
     HealthDataListView(metric: .steps)
+        .environment(HealthKitManager())
 }
