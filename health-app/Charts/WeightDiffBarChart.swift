@@ -11,6 +11,7 @@ import Charts
 struct WeightDiffBarChart: View {
     
     @State private var rawSelectedDate: Date?
+    @State private var selectedDay: Date?
     
     var chartData: [WeekdayChartData]
     
@@ -37,41 +38,55 @@ struct WeightDiffBarChart: View {
             }
             .foregroundStyle(.secondary)
             .padding(.bottom, 12)
-    
-            Chart {
-                if let selectedData {
-                    RuleMark(x: .value("Selected Data", selectedData.date, unit: .day))
-                        .foregroundStyle(Color.secondary.opacity(0.3))
-                        .offset(y: -10)
-                        .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {annotationView}
-                    
-                }
+            
+            if chartData.isEmpty {
+                ChartEmptyView(systemImageName: "chart.bar", title: "No data", description: "There is no weight data from Health App.")
+            } else {
                 
-                ForEach(chartData) { weightDiff in
-                    BarMark(
-                        x: .value("Date", weightDiff.date, unit: .day),
-                        y: .value("Steps", weightDiff.value)
-                    )
-                    .foregroundStyle(weightDiff.value >= 0 ? Color.purple.gradient : Color.gray.gradient)
+                Chart {
+                    if let selectedData {
+                        RuleMark(x: .value("Selected Data", selectedData.date, unit: .day))
+                            .foregroundStyle(Color.secondary.opacity(0.3))
+                            .offset(y: -10)
+                            .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {annotationView}
+                        
+                    }
+                    
+                    ForEach(chartData) { weightDiff in
+                        BarMark(
+                            x: .value("Date", weightDiff.date, unit: .day),
+                            y: .value("Steps", weightDiff.value)
+                        )
+                        .foregroundStyle(weightDiff.value >= 0 ? Color.purple.gradient : Color.gray.gradient)
+                    }
                 }
-            }
-            .chartYAxis {
-                AxisMarks { value in
-                    AxisGridLine()
-                        .foregroundStyle(Color.secondary.opacity(0.3))
-                    AxisValueLabel()
+                .chartYAxis {
+                    AxisMarks { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.secondary.opacity(0.3))
+                        AxisValueLabel()
+                    }
                 }
-            }
-            .chartXAxis {
-                AxisMarks(values: .stride(by: .day)){
-                    AxisValueLabel(format: .dateTime.weekday(), centered: true)
+                .chartXAxis {
+                    AxisMarks(values: .stride(by: .day)){
+                        AxisValueLabel(format: .dateTime.weekday(), centered: true)
+                    }
                 }
+                .chartXSelection(value: $rawSelectedDate.animation(.easeInOut))
+                .frame(height: 200)
             }
-            .chartXSelection(value: $rawSelectedDate.animation(.easeInOut))
-            .frame(height: 200)
-        }
+                
+            }
+    
+            
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
+        .onChange(of: rawSelectedDate) { oldValue, newValue in
+            if oldValue?.weekdayInt != newValue?.weekdayInt {
+                selectedDay = newValue
+            }
+            
+        }
     }
     
     var annotationView: some View {

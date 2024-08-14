@@ -12,9 +12,12 @@ struct HealthDataListView: View {
     @Environment(HealthKitManager.self) private var hkManager
     
     @State private var isShowingAddData = false
-    
+    @State private var isShowingAlert = false
+    @State private var writeError: STError = .noData
     @State private var addDataDate: Date = .now
     @State private var valueToAdd: String = ""
+    
+    
     
     var metric: HealthMetricType
     
@@ -79,24 +82,72 @@ struct HealthDataListView: View {
                 }
             }
             .navigationTitle(metric.title)
+            .alert(isPresented: $isShowingAlert, error: writeError) { writeError in
+                switch writeError {
+                case .authNotDetermined, .noData, .unabletoCompleteRequest, .invalidValue:
+                    EmptyView()
+                case .sharingDenied(_):
+                    Button("Settings") {
+                        
+                    }
+                    
+                    Button("Cancel", role: .cancel) {
+                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                    }
+                
+                }
+            } message: { writeError in
+                Text(writeError.failureReason)
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add Data") {
+                        guard let value = Double(valueToAdd) else {
+                            writeError = .invalidValue
+                            isShowingAlert = true
+                            valueToAdd = ""
+                            return
+                        }
                         Task{
                             switch metric {
                             case .steps:
-                                await hkManager.addStepData(for: addDataDate, value: Double(valueToAdd)!)
-                                await hkManager.fetchStepCount()
-                                isShowingAddData = false
+                                do {
+                                    try await hkManager.addStepData(for: addDataDate, value: value)
+                                    try await hkManager.fetchStepCount()
+                                    isShowingAddData = false
+                                } catch STError.sharingDenied(let quantityType) {
+                                    writeError = .sharingDenied(quantityType: quantityType)
+                                    isShowingAlert = true
+                                } catch {
+                                    writeError = .unabletoCompleteRequest
+                                    isShowingAlert = true
+
+                                }
+                                
                             case .weight:
-                                await hkManager.addWeightData(for: addDataDate, value: Double(valueToAdd)!)
-                                await hkManager.fetchWeights()
-                                await hkManager.fetchWeightDifferential()
-                                isShowingAddData = false
+                                do {
+                                    try await hkManager.addWeightData(for: addDataDate, value: value)
+                                    try await hkManager.fetchWeights()
+                                    try await hkManager.fetchWeightDifferential()
+                                    isShowingAddData = false
+                                } catch STError.sharingDenied(let quantityType) {
+                                    writeError = .sharingDenied(quantityType: quantityType)
+                                    isShowingAlert = true
+                                } catch {
+                                    writeError = .unabletoCompleteRequest
+                                    isShowingAlert = true
+                                }
                             case .calories:
-                                await hkManager.addCaloryData(for: addDataDate, value: Double(valueToAdd)!)
-                                await hkManager.fetchCalories()
-                                isShowingAddData = false
+                                do {
+                                    try await hkManager.addCaloryData(for: addDataDate, value: Double(valueToAdd)!)
+                                    try await hkManager.fetchCalories()
+                                    isShowingAddData = false
+                                } catch STError.sharingDenied(let quantityType) {
+                                    print("Sharing denied for \(quantityType)")
+                                } catch {
+                                    print("Data list view unable to complete request")
+                                }
+                                
                             }
                         }
                     }

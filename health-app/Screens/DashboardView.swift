@@ -39,9 +39,11 @@ enum HealthMetricType: CaseIterable, Identifiable {
 struct DashboardView: View {
     
     @Environment(HealthKitManager.self) private var hkManager
-    @AppStorage("hasSeenPermissionView") private var hasSeenPermissionView = false
+    
     @State private var isShowingPermissionViewSheet = false
     @State private var selectedStat: HealthMetricType = .steps
+    @State private var isShowingAlert = false
+    @State private var fetchError: STError = .noData
     
     var body: some View {
         NavigationStack {
@@ -76,22 +78,38 @@ struct DashboardView: View {
             }
             .padding()
             .task {
-                await hkManager.fetchStepCount()
-                await hkManager.fetchWeights()
-                await hkManager.fetchWeightDifferential()
-                await hkManager.fetchCalories()
-                isShowingPermissionViewSheet = !hasSeenPermissionView
+                
+                do {
+                    try await hkManager.fetchStepCount()
+                    try await hkManager.fetchWeights()
+                    try await hkManager.fetchWeightDifferential()
+                    try await hkManager.fetchCalories()
+                    
+                } catch STError.authNotDetermined{
+                    isShowingPermissionViewSheet = true
+                } catch STError.noData {
+                    fetchError = .noData
+                    isShowingAlert = true
+                } catch {
+                    fetchError = .unabletoCompleteRequest
+                    isShowingAlert = true
+                }
+                
             }
             .navigationTitle("Dashboard")
             .navigationDestination(for: HealthMetricType.self) { metric in
                 HealthDataListView(metric: metric)
-                
             }
             .sheet(isPresented: $isShowingPermissionViewSheet, onDismiss: {
                 // fetch health data
             }, content: {
-                HealthKitPermissionView(hasSeen: $hasSeenPermissionView)
+                HealthKitPermissionView()
             })
+            .alert(isPresented: $isShowingAlert, error: fetchError) { fetchError in
+                // Actions
+            } message: { fetchError in
+                Text(fetchError.failureReason)
+            }
         }
         .tint(selectedStat.tintColor)
     }
