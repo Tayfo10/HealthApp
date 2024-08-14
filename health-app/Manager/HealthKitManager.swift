@@ -190,7 +190,7 @@ enum STError: LocalizedError {
     }
 
     func addStepData(for date: Date, value: Double) async throws {
-        throw STError.sharingDenied(quantityType: "step count")
+        
         
         let status = store.authorizationStatus(for: HKQuantityType(.stepCount))
         switch status {
