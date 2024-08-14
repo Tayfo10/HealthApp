@@ -42,6 +42,8 @@ struct DashboardView: View {
     
     @State private var isShowingPermissionViewSheet = false
     @State private var selectedStat: HealthMetricType = .steps
+    @State private var isShowingAlert = false
+    @State private var fetchError: STError = .noData
     
     var body: some View {
         NavigationStack {
@@ -76,6 +78,7 @@ struct DashboardView: View {
             }
             .padding()
             .task {
+                
                 do {
                     try await hkManager.fetchStepCount()
                     try await hkManager.fetchWeights()
@@ -85,9 +88,11 @@ struct DashboardView: View {
                 } catch STError.authNotDetermined{
                     isShowingPermissionViewSheet = true
                 } catch STError.noData {
-                    print("No Data error")
+                    fetchError = .noData
+                    isShowingAlert = true
                 } catch {
-                    print("Unable to complete request")
+                    fetchError = .unabletoCompleteRequest
+                    isShowingAlert = true
                 }
                 
             }
@@ -100,6 +105,11 @@ struct DashboardView: View {
             }, content: {
                 HealthKitPermissionView()
             })
+            .alert(isPresented: $isShowingAlert, error: fetchError) { fetchError in
+                // Actions
+            } message: { fetchError in
+                Text(fetchError.failureReason)
+            }
         }
         .tint(selectedStat.tintColor)
     }
