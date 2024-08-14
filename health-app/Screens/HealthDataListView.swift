@@ -84,9 +84,9 @@ struct HealthDataListView: View {
             .navigationTitle(metric.title)
             .alert(isPresented: $isShowingAlert, error: writeError) { writeError in
                 switch writeError {
-                case .authNotDetermined, .noData, .unabletoCompleteRequest:
+                case .authNotDetermined, .noData, .unabletoCompleteRequest, .invalidValue:
                     EmptyView()
-                case .sharingDenied(let quantityType):
+                case .sharingDenied(_):
                     Button("Settings") {
                         
                     }
@@ -94,6 +94,7 @@ struct HealthDataListView: View {
                     Button("Cancel", role: .cancel) {
                         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                     }
+                
                 }
             } message: { writeError in
                 Text(writeError.failureReason)
@@ -101,11 +102,17 @@ struct HealthDataListView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add Data") {
+                        guard let value = Double(valueToAdd) else {
+                            writeError = .invalidValue
+                            isShowingAlert = true
+                            valueToAdd = ""
+                            return
+                        }
                         Task{
                             switch metric {
                             case .steps:
                                 do {
-                                    try await hkManager.addStepData(for: addDataDate, value: Double(valueToAdd)!)
+                                    try await hkManager.addStepData(for: addDataDate, value: value)
                                     try await hkManager.fetchStepCount()
                                     isShowingAddData = false
                                 } catch STError.sharingDenied(let quantityType) {
@@ -119,7 +126,7 @@ struct HealthDataListView: View {
                                 
                             case .weight:
                                 do {
-                                    try await hkManager.addWeightData(for: addDataDate, value: Double(valueToAdd)!)
+                                    try await hkManager.addWeightData(for: addDataDate, value: value)
                                     try await hkManager.fetchWeights()
                                     try await hkManager.fetchWeightDifferential()
                                     isShowingAddData = false

@@ -14,6 +14,7 @@ enum STError: LocalizedError {
     case noData
     case unabletoCompleteRequest
     case sharingDenied(quantityType: String)
+    case invalidValue
     
     var errorDescription: String? {
         switch self {
@@ -25,6 +26,8 @@ enum STError: LocalizedError {
             "No Data"
         case .sharingDenied(_):
             "Unable to Complete Request"
+        case .invalidValue:
+            "Invalid Value"
         }
     }
     
@@ -38,6 +41,8 @@ enum STError: LocalizedError {
             "There is no data for this Health Statistic."
         case .sharingDenied(let quantityType):
             "You have denied access to upload your \(quantityType) data. \n\nYou can change this in Settings > Health > Data Access & Devices."
+        case .invalidValue:
+            "Must be a numeric value with a maximum of one decimal place."
         }
     }
 }
