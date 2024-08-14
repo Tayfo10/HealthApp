@@ -50,41 +50,46 @@ struct CaloriesBarChart: View {
             .foregroundStyle(.secondary)
             .padding(.bottom, 12)
             
-            Chart {
-                if let selectedHealthMetric {
-                    RuleMark(x: .value("Selected Metric", selectedHealthMetric.date, unit: .day))
-                        .foregroundStyle(Color.secondary.opacity(0.3))
-                        .offset(y: -10)
-                        .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {annotationView}
+            if chartData.isEmpty {
+                ChartEmptyView(systemImageName: "chart.bar", title: "No data", description: "There is no calories data from Health App.")
+            } else {
+                Chart {
+                    if let selectedHealthMetric {
+                        RuleMark(x: .value("Selected Metric", selectedHealthMetric.date, unit: .day))
+                            .foregroundStyle(Color.secondary.opacity(0.3))
+                            .offset(y: -10)
+                            .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {annotationView}
+                        }
+                    
+                    RuleMark(y: .value("Average", avgCaloryCount))
+                        .foregroundStyle(Color.secondary)
+                        .lineStyle(.init(lineWidth: 1, dash:[4]))
+                    
+                    ForEach(chartData) { calories in
+                        BarMark(
+                            x: .value("Date", calories.date, unit: .day),
+                            y: .value("Steps", calories.value)
+                        )
+                        .foregroundStyle(calories.value > avgCaloryCount ? Color.green.gradient : Color.gray.gradient)
+                        .opacity(rawSelectedDate == nil || calories.date == selectedHealthMetric?.date ? 1.0 : 0.3)
                     }
-                
-                RuleMark(y: .value("Average", avgCaloryCount))
-                    .foregroundStyle(Color.secondary)
-                    .lineStyle(.init(lineWidth: 1, dash:[4]))
-                
-                ForEach(chartData) { calories in
-                    BarMark(
-                        x: .value("Date", calories.date, unit: .day),
-                        y: .value("Steps", calories.value)
-                    )
-                    .foregroundStyle(calories.value > avgCaloryCount ? Color.green.gradient : Color.gray.gradient)
-                    .opacity(rawSelectedDate == nil || calories.date == selectedHealthMetric?.date ? 1.0 : 0.3)
                 }
-            }
-            .chartYAxis {
-                AxisMarks { value in
-                    AxisGridLine()
-                        .foregroundStyle(Color.secondary.opacity(0.3))
-                    AxisValueLabel((value.as(Double.self) ?? 0).formatted(.number.notation(.compactName)))
+                .chartYAxis {
+                    AxisMarks { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.secondary.opacity(0.3))
+                        AxisValueLabel((value.as(Double.self) ?? 0).formatted(.number.notation(.compactName)))
+                    }
                 }
-            }
-            .chartXAxis {
-                AxisMarks {
-                    AxisValueLabel(format: .dateTime.month().day())
+                .chartXAxis {
+                    AxisMarks {
+                        AxisValueLabel(format: .dateTime.month().day())
+                    }
                 }
+                .chartXSelection(value: $rawSelectedDate.animation(.easeInOut))
+                .frame(height: 130)
             }
-            .chartXSelection(value: $rawSelectedDate.animation(.easeInOut))
-            .frame(height: 130)
+            
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))

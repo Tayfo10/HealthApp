@@ -53,40 +53,47 @@ struct CaloriesLineChart: View {
             .foregroundStyle(.secondary)
             .padding(.bottom, 12)
             
-            Chart {
-                if let selectedHealthMetric {
-                    RuleMark(x: .value("Selected Metric", selectedHealthMetric.date, unit: .day))
-                        .foregroundStyle(Color.secondary.opacity(0.3))
-                        .offset(y: -10)
-                        .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) { annotationView }
+            if chartData.isEmpty {
+                ChartEmptyView(systemImageName: "chart.line.downtrend.xyaxis", title: "No data", description: "There is no calories data from Health App.")
+            } else {
+                
+                Chart {
+                    if let selectedHealthMetric {
+                        RuleMark(x: .value("Selected Metric", selectedHealthMetric.date, unit: .day))
+                            .foregroundStyle(Color.secondary.opacity(0.3))
+                            .offset(y: -10)
+                            .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) { annotationView }
+                    }
+                    ForEach(chartData) { calory in
+                        AreaMark(x: .value("day", calory.date, unit: .day),
+                                 yStart: .value("value", calory.value),
+                                 yEnd: .value("minvalue", minValue))
+                        .foregroundStyle(Gradient(colors: [.green.opacity(0.5), .clear]))
+                        
+                        LineMark(x: .value("day", calory.date, unit: .day), y: .value("Value", calory.value))
+                            .foregroundStyle(Color(.green))
+                            .symbol(.circle)
+                    }
                 }
-                ForEach(chartData) { calory in
-                    AreaMark(x: .value("day", calory.date, unit: .day),
-                             yStart: .value("value", calory.value),
-                             yEnd: .value("minvalue", minValue))
-                    .foregroundStyle(Gradient(colors: [.green.opacity(0.5), .clear]))
-                    
-                    LineMark(x: .value("day", calory.date, unit: .day), y: .value("Value", calory.value))
-                        .foregroundStyle(Color(.green))
-                        .symbol(.circle)
+                .chartXSelection(value: $rawSelectedDate.animation(.easeInOut))
+                .frame(height: 130)
+                .chartYScale(domain: .automatic(includesZero: false))
+                .chartYAxis {
+                    AxisMarks { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.secondary.opacity(0.3))
+                        AxisValueLabel()
+                    }
                 }
+                .chartXAxis {
+                    AxisMarks {
+                        AxisValueLabel(format: .dateTime.month().day())
+                    }
+                }
+                .frame(height: 130)
+                
             }
-            .chartXSelection(value: $rawSelectedDate.animation(.easeInOut))
-            .frame(height: 130)
-            .chartYScale(domain: .automatic(includesZero: false))
-            .chartYAxis {
-                AxisMarks { value in
-                    AxisGridLine()
-                        .foregroundStyle(Color.secondary.opacity(0.3))
-                    AxisValueLabel()
-                }
-            }
-            .chartXAxis {
-                AxisMarks {
-                    AxisValueLabel(format: .dateTime.month().day())
-                }
-            }
-            .frame(height: 130)
+            
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))

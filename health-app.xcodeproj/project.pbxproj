@@ -13,6 +13,7 @@
 		C759257A2C6B4AED00BF7BD4 /* CaloriesTodayCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75925792C6B4AED00BF7BD4 /* CaloriesTodayCard.swift */; };
 		C759257C2C6B53E900BF7BD4 /* CaloriesLineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759257B2C6B53E900BF7BD4 /* CaloriesLineChart.swift */; };
 		C759257E2C6B6B9B00BF7BD4 /* CaloriesBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759257D2C6B6B9B00BF7BD4 /* CaloriesBarChart.swift */; };
+		C75925802C6CB3EB00BF7BD4 /* ChartEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759257F2C6CB3EB00BF7BD4 /* ChartEmptyView.swift */; };
 		C75E4BE22C64D54000626717 /* health_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BE12C64D54000626717 /* health_appApp.swift */; };
 		C75E4BE42C64D54000626717 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BE32C64D54000626717 /* DashboardView.swift */; };
 		C75E4BE62C64D54200626717 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C75E4BE52C64D54200626717 /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 		C75925792C6B4AED00BF7BD4 /* CaloriesTodayCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesTodayCard.swift; sourceTree = "<group>"; };
 		C759257B2C6B53E900BF7BD4 /* CaloriesLineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesLineChart.swift; sourceTree = "<group>"; };
 		C759257D2C6B6B9B00BF7BD4 /* CaloriesBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesBarChart.swift; sourceTree = "<group>"; };
+		C759257F2C6CB3EB00BF7BD4 /* ChartEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartEmptyView.swift; sourceTree = "<group>"; };
 		C75E4BDE2C64D54000626717 /* health-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "health-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C75E4BE12C64D54000626717 /* health_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = health_appApp.swift; sourceTree = "<group>"; };
 		C75E4BE32C64D54000626717 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				C75925792C6B4AED00BF7BD4 /* CaloriesTodayCard.swift */,
 				C759257B2C6B53E900BF7BD4 /* CaloriesLineChart.swift */,
 				C759257D2C6B6B9B00BF7BD4 /* CaloriesBarChart.swift */,
+				C759257F2C6CB3EB00BF7BD4 /* ChartEmptyView.swift */,
 			);
 			path = Charts;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				C75E4BE22C64D54000626717 /* health_appApp.swift in Sources */,
 				C759257C2C6B53E900BF7BD4 /* CaloriesLineChart.swift in Sources */,
 				C75E4BFF2C6926C600626717 /* ChartMath.swift in Sources */,
+				C75925802C6CB3EB00BF7BD4 /* ChartEmptyView.swift in Sources */,
 				C75925732C69FB8300BF7BD4 /* WeightLineChart.swift in Sources */,
 				C75E4BF72C68A7A500626717 /* HealthMetric.swift in Sources */,
 				C75E4C012C69271500626717 /* ChartDataTypes.swift in Sources */,

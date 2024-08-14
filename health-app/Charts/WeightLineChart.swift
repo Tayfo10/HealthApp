@@ -54,40 +54,48 @@ struct WeightLineChart: View {
             .foregroundStyle(.secondary)
             .padding(.bottom, 12)
             
-            Chart {
-                if let selectedHealthMetric {
-                    RuleMark(x: .value("Selected Metric", selectedHealthMetric.date, unit: .day))
-                        .foregroundStyle(Color.secondary.opacity(0.3))
-                        .offset(y: -10)
-                        .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) { annotationView }
+            if chartData.isEmpty {
+                ChartEmptyView(systemImageName: "chart.line.downtrend.xyaxis", title: "No data", description: "There is no weight data from Health App.")
+            } else {
+               
+                Chart {
+                    if let selectedHealthMetric {
+                        RuleMark(x: .value("Selected Metric", selectedHealthMetric.date, unit: .day))
+                            .foregroundStyle(Color.secondary.opacity(0.3))
+                            .offset(y: -10)
+                            .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) { annotationView }
+                    }
+                    ForEach(chartData) { weight in
+                        AreaMark(x: .value("day", weight.date, unit: .day),
+                                 yStart: .value("value", weight.value),
+                                 yEnd: .value("minvalue", minValue))
+                        .foregroundStyle(Gradient(colors: [.purple.opacity(0.5), .clear]))
+                        
+                        LineMark(x: .value("day", weight.date, unit: .day), y: .value("Value", weight.value))
+                            .foregroundStyle(Color(.purple))
+                            .symbol(.circle)
+                    }
                 }
-                ForEach(chartData) { weight in
-                    AreaMark(x: .value("day", weight.date, unit: .day),
-                             yStart: .value("value", weight.value),
-                             yEnd: .value("minvalue", minValue))
-                    .foregroundStyle(Gradient(colors: [.purple.opacity(0.5), .clear]))
-                    
-                    LineMark(x: .value("day", weight.date, unit: .day), y: .value("Value", weight.value))
-                        .foregroundStyle(Color(.purple))
-                        .symbol(.circle)
+                .chartXSelection(value: $rawSelectedDate)
+                .frame(height: 150)
+                .chartYScale(domain: .automatic(includesZero: false))
+                .chartYAxis {
+                    AxisMarks { value in
+                        AxisGridLine()
+                            .foregroundStyle(Color.secondary.opacity(0.3))
+                        AxisValueLabel()
+                    }
                 }
+                .chartXAxis {
+                    AxisMarks {
+                        AxisValueLabel(format: .dateTime.month().day())
+                    }
+                }
+                .frame(height: 170)
+                
             }
-            .chartXSelection(value: $rawSelectedDate)
-            .frame(height: 150)
-            .chartYScale(domain: .automatic(includesZero: false))
-            .chartYAxis {
-                AxisMarks { value in
-                    AxisGridLine()
-                        .foregroundStyle(Color.secondary.opacity(0.3))
-                    AxisValueLabel()
-                }
-            }
-            .chartXAxis {
-                AxisMarks {
-                    AxisValueLabel(format: .dateTime.month().day())
-                }
-            }
-            .frame(height: 170)
+            
+            
             
         }
         .padding()
