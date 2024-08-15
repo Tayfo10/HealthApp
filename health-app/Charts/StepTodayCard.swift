@@ -18,9 +18,7 @@ struct StepTodayCard: View {
             }
             .padding()
             .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
-            
         } else {
-            
             VStack {
                 HStack{
                     VStack (alignment: .leading){
@@ -41,7 +39,6 @@ struct StepTodayCard: View {
             .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
             
         }
-        
     }
 }
 

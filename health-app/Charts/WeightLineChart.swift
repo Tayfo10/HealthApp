@@ -25,12 +25,10 @@ struct WeightLineChart: View {
         guard !chartData.isEmpty else { return 0 }
         let totalWeight = chartData.reduce(0) {$0 + $1.value }
         return totalWeight/Double(chartData.count)
-        
     }
     
     var selectedStat: HealthMetricType
     var chartData: [HealthMetric]
-    
     var minValue: Double {
         chartData.map { $0.value }.min() ?? 0
     }
@@ -57,7 +55,6 @@ struct WeightLineChart: View {
             if chartData.isEmpty {
                 ChartEmptyView(systemImageName: "chart.line.downtrend.xyaxis", title: "No data", description: "There is no weight data from Health App.")
             } else {
-               
                 Chart {
                     if let selectedHealthMetric {
                         RuleMark(x: .value("Selected Metric", selectedHealthMetric.date, unit: .day))
@@ -92,11 +89,7 @@ struct WeightLineChart: View {
                     }
                 }
                 .frame(height: 170)
-                
             }
-            
-            
-            
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
@@ -104,9 +97,7 @@ struct WeightLineChart: View {
             if oldValue?.weekdayInt != newValue?.weekdayInt {
                 selectedDay = newValue
             }
-            
         }
-        
     }
     
     var annotationView: some View {

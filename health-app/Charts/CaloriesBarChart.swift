@@ -31,7 +31,6 @@ struct CaloriesBarChart: View {
     }
     
     var body: some View {
-        
         VStack {
             NavigationLink(value: selectedStat) {
                 HStack{
@@ -59,7 +58,7 @@ struct CaloriesBarChart: View {
                             .foregroundStyle(Color.secondary.opacity(0.3))
                             .offset(y: -10)
                             .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {annotationView}
-                        }
+                    }
                     
                     RuleMark(y: .value("Average", avgCaloryCount))
                         .foregroundStyle(Color.secondary)
@@ -89,7 +88,6 @@ struct CaloriesBarChart: View {
                 .chartXSelection(value: $rawSelectedDate.animation(.easeInOut))
                 .frame(height: 130)
             }
-            
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))

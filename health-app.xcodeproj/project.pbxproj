@@ -14,6 +14,7 @@
 		C759257C2C6B53E900BF7BD4 /* CaloriesLineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759257B2C6B53E900BF7BD4 /* CaloriesLineChart.swift */; };
 		C759257E2C6B6B9B00BF7BD4 /* CaloriesBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759257D2C6B6B9B00BF7BD4 /* CaloriesBarChart.swift */; };
 		C75925802C6CB3EB00BF7BD4 /* ChartEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C759257F2C6CB3EB00BF7BD4 /* ChartEmptyView.swift */; };
+		C75925842C6D1D4300BF7BD4 /* STError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75925832C6D1D4300BF7BD4 /* STError.swift */; };
 		C75E4BE22C64D54000626717 /* health_appApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BE12C64D54000626717 /* health_appApp.swift */; };
 		C75E4BE42C64D54000626717 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75E4BE32C64D54000626717 /* DashboardView.swift */; };
 		C75E4BE62C64D54200626717 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C75E4BE52C64D54200626717 /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 		C759257B2C6B53E900BF7BD4 /* CaloriesLineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesLineChart.swift; sourceTree = "<group>"; };
 		C759257D2C6B6B9B00BF7BD4 /* CaloriesBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesBarChart.swift; sourceTree = "<group>"; };
 		C759257F2C6CB3EB00BF7BD4 /* ChartEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartEmptyView.swift; sourceTree = "<group>"; };
+		C75925832C6D1D4300BF7BD4 /* STError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STError.swift; sourceTree = "<group>"; };
 		C75E4BDE2C64D54000626717 /* health-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "health-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C75E4BE12C64D54000626717 /* health_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = health_appApp.swift; sourceTree = "<group>"; };
 		C75E4BE32C64D54000626717 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -74,8 +76,26 @@
 			children = (
 				C75E4C022C6927DB00626717 /* Extensions */,
 				C75925752C6A0F1B00BF7BD4 /* MockData.swift */,
+				C75925832C6D1D4300BF7BD4 /* STError.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		C75925852C6E06B000BF7BD4 /* Chart Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				C75E4BFE2C6926C600626717 /* ChartMath.swift */,
+				C75E4C002C69271500626717 /* ChartDataTypes.swift */,
+			);
+			path = "Chart Utilities";
+			sourceTree = "<group>";
+		};
+		C75925862C6E06D300BF7BD4 /* Chart Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				C759257F2C6CB3EB00BF7BD4 /* ChartEmptyView.swift */,
+			);
+			path = "Chart Custom Views";
 			sourceTree = "<group>";
 		};
 		C75E4BD52C64D54000626717 = {
@@ -131,8 +151,8 @@
 		C75E4BFB2C69243000626717 /* Charts */ = {
 			isa = PBXGroup;
 			children = (
-				C75E4BFE2C6926C600626717 /* ChartMath.swift */,
-				C75E4C002C69271500626717 /* ChartDataTypes.swift */,
+				C75925862C6E06D300BF7BD4 /* Chart Custom Views */,
+				C75925852C6E06B000BF7BD4 /* Chart Utilities */,
 				C75E4C0A2C69544300626717 /* StepTodayCard.swift */,
 				C75E4BF82C68F7E200626717 /* StepBarChart.swift */,
 				C75E4C082C694BCB00626717 /* StepPieChart.swift */,
@@ -141,7 +161,6 @@
 				C75925792C6B4AED00BF7BD4 /* CaloriesTodayCard.swift */,
 				C759257B2C6B53E900BF7BD4 /* CaloriesLineChart.swift */,
 				C759257D2C6B6B9B00BF7BD4 /* CaloriesBarChart.swift */,
-				C759257F2C6CB3EB00BF7BD4 /* ChartEmptyView.swift */,
 			);
 			path = Charts;
 			sourceTree = "<group>";
@@ -263,6 +282,7 @@
 				C75E4C012C69271500626717 /* ChartDataTypes.swift in Sources */,
 				C75925782C6A990600BF7BD4 /* WeightDiffBarChart.swift in Sources */,
 				C75E4C092C694BCB00626717 /* StepPieChart.swift in Sources */,
+				C75925842C6D1D4300BF7BD4 /* STError.swift in Sources */,
 				C75E4C042C6927F800626717 /* Date+Ext.swift in Sources */,
 				C759257A2C6B4AED00BF7BD4 /* CaloriesTodayCard.swift in Sources */,
 			);

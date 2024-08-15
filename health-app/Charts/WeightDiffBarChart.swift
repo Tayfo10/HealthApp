@@ -14,7 +14,6 @@ struct WeightDiffBarChart: View {
     @State private var selectedDay: Date?
     
     var chartData: [WeekdayChartData]
-    
     var selectedData: WeekdayChartData? {
         guard let rawSelectedDate else { return nil }
         let selectedMetric = chartData.first {
@@ -24,7 +23,6 @@ struct WeightDiffBarChart: View {
     }
     
     var body: some View {
-        
         VStack {
             HStack{
                 VStack (alignment: .leading){
@@ -42,14 +40,12 @@ struct WeightDiffBarChart: View {
             if chartData.isEmpty {
                 ChartEmptyView(systemImageName: "chart.bar", title: "No data", description: "There is no weight data from Health App.")
             } else {
-                
                 Chart {
                     if let selectedData {
                         RuleMark(x: .value("Selected Data", selectedData.date, unit: .day))
                             .foregroundStyle(Color.secondary.opacity(0.3))
                             .offset(y: -10)
                             .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {annotationView}
-                        
                     }
                     
                     ForEach(chartData) { weightDiff in
@@ -75,17 +71,13 @@ struct WeightDiffBarChart: View {
                 .chartXSelection(value: $rawSelectedDate.animation(.easeInOut))
                 .frame(height: 200)
             }
-                
-            }
-    
-            
+        }
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
         .onChange(of: rawSelectedDate) { oldValue, newValue in
             if oldValue?.weekdayInt != newValue?.weekdayInt {
                 selectedDay = newValue
             }
-            
         }
     }
     
