@@ -77,31 +77,16 @@ struct DashboardView: View {
                 }
             }
             .padding()
-            .task {
-                
-                do {
-                    try await hkManager.fetchStepCount()
-                    try await hkManager.fetchWeights()
-                    try await hkManager.fetchWeightDifferential()
-                    try await hkManager.fetchCalories()
-                    
-                } catch STError.authNotDetermined{
-                    isShowingPermissionViewSheet = true
-                } catch STError.noData {
-                    fetchError = .noData
-                    isShowingAlert = true
-                } catch {
-                    fetchError = .unabletoCompleteRequest
-                    isShowingAlert = true
-                }
-                
+            .task { 
+                // await hkManager.addSimulatorData()
+                fetchHealthData()
             }
             .navigationTitle("Dashboard")
             .navigationDestination(for: HealthMetricType.self) { metric in
                 HealthDataListView(metric: metric)
             }
             .sheet(isPresented: $isShowingPermissionViewSheet, onDismiss: {
-                // fetch health data
+                fetchHealthData()
             }, content: {
                 HealthKitPermissionView()
             })
@@ -112,6 +97,31 @@ struct DashboardView: View {
             }
         }
         .tint(selectedStat.tintColor)
+    }
+    
+    private func fetchHealthData() {
+        Task {
+            do {
+                async let steps = hkManager.fetchStepCount()
+                async let weightForLineChart = hkManager.fetchWeights(daysBack: 28)
+                async let weightsForDiffBarChart = hkManager.fetchWeights(daysBack: 29)
+                async let calories = hkManager.fetchCalories()
+                
+                hkManager.stepData = try await steps
+                hkManager.weightData = try await weightForLineChart
+                hkManager.weightDiffData = try await weightsForDiffBarChart
+                hkManager.caloriesData = try await calories
+                
+            } catch STError.authNotDetermined{
+                isShowingPermissionViewSheet = true
+            } catch STError.noData {
+                fetchError = .noData
+                isShowingAlert = true
+            } catch {
+                fetchError = .unabletoCompleteRequest
+                isShowingAlert = true
+            }
+        }
     }
 }
 
