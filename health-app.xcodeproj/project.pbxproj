@@ -81,6 +81,23 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		C75925852C6E06B000BF7BD4 /* Chart Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				C75E4BFE2C6926C600626717 /* ChartMath.swift */,
+				C75E4C002C69271500626717 /* ChartDataTypes.swift */,
+			);
+			path = "Chart Utilities";
+			sourceTree = "<group>";
+		};
+		C75925862C6E06D300BF7BD4 /* Chart Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				C759257F2C6CB3EB00BF7BD4 /* ChartEmptyView.swift */,
+			);
+			path = "Chart Custom Views";
+			sourceTree = "<group>";
+		};
 		C75E4BD52C64D54000626717 = {
 			isa = PBXGroup;
 			children = (
@@ -134,8 +151,8 @@
 		C75E4BFB2C69243000626717 /* Charts */ = {
 			isa = PBXGroup;
 			children = (
-				C75E4BFE2C6926C600626717 /* ChartMath.swift */,
-				C75E4C002C69271500626717 /* ChartDataTypes.swift */,
+				C75925862C6E06D300BF7BD4 /* Chart Custom Views */,
+				C75925852C6E06B000BF7BD4 /* Chart Utilities */,
 				C75E4C0A2C69544300626717 /* StepTodayCard.swift */,
 				C75E4BF82C68F7E200626717 /* StepBarChart.swift */,
 				C75E4C082C694BCB00626717 /* StepPieChart.swift */,
@@ -144,7 +161,6 @@
 				C75925792C6B4AED00BF7BD4 /* CaloriesTodayCard.swift */,
 				C759257B2C6B53E900BF7BD4 /* CaloriesLineChart.swift */,
 				C759257D2C6B6B9B00BF7BD4 /* CaloriesBarChart.swift */,
-				C759257F2C6CB3EB00BF7BD4 /* ChartEmptyView.swift */,
 			);
 			path = Charts;
 			sourceTree = "<group>";
