@@ -20,6 +20,8 @@ import Observation
     var weightDiffData: [HealthMetric] = []
     var caloriesData:[HealthMetric] = []
     
+    /// Fetch last 28 days of step count from HealthKit
+    /// - Returns: Array of ``HealthMetric``
     func fetchStepCount() async throws -> [HealthMetric] {
         
         guard store.authorizationStatus(for: HKQuantityType(.stepCount)) != .notDetermined else {
@@ -48,6 +50,9 @@ import Observation
         }
     }
     
+    /// Fetch most recent weight sample on each day for a specified number of days back from today.
+    /// - Parameter daysBack: Days back from today
+    /// - Returns: Array of ``HealthMetric``
     func fetchWeights(daysBack: Int) async throws -> [HealthMetric] {
         
         guard store.authorizationStatus(for: HKQuantityType(.bodyMass)) != .notDetermined else {
@@ -76,6 +81,8 @@ import Observation
         }
     }
     
+    /// Fetches the calories data over that time period
+    /// - Returns: Array of ``HealthMetric``
     func fetchCalories() async throws -> [HealthMetric]{
         
         guard store.authorizationStatus(for: HKQuantityType(.activeEnergyBurned)) != .notDetermined else {
@@ -104,6 +111,10 @@ import Observation
         }
     }
     
+    /// Write step count data to HealthKit. Requires HealthKit write permission.
+    /// - Parameters:
+    ///   - date: Date for step count value
+    ///   - value: Amount of steps on that day
     func addStepData(for date: Date, value: Double) async throws {
         
         
@@ -129,6 +140,10 @@ import Observation
         
     }
     
+    /// Write weight value to HealthKit. Requires HealthKit write permission
+    /// - Parameters:
+    ///   - date: Date for weight value
+    ///   - value: Weight value on that day
     func addWeightData(for date: Date, value: Double) async throws {
         let status = store.authorizationStatus(for: HKQuantityType(.bodyMass))
         switch status {
@@ -151,6 +166,10 @@ import Observation
         
     }
     
+    /// Write calories value to HealthKit. Requires HealthKit write permission
+    /// - Parameters:
+    ///   - date: Date for weight value
+    ///   - value: Calories value on that day
     func addCaloryData(for date: Date, value: Double) async throws{
         let status = store.authorizationStatus(for: HKQuantityType(.activeEnergyBurned))
         switch status {
@@ -173,6 +192,11 @@ import Observation
         
     }
     
+    /// Creates a DateInterval between two dates
+    /// - Parameters:
+    ///   - date: End of date interval
+    ///   - daysBack: Start of date interval
+    /// - Returns: DateInterval
     private func createDateInterval(from date: Date, daysBack: Int) -> DateInterval {
         
         let calendar = Calendar.current
@@ -183,6 +207,7 @@ import Observation
     }
     
     
+    /// Injects simulator data to HealthKit
     func addSimulatorData() async {
         
         var mockSamples: [HKQuantitySample] = []
