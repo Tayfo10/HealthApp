@@ -10,6 +10,7 @@ import Charts
 
 struct StepPieChart: View {
     
+    @State private var lastSelectedValue: Double = 0
     @State private var rawSelectedChartValue: Double? = 0
     @State private var selectedDay : Date?
     
@@ -19,12 +20,11 @@ struct StepPieChart: View {
         
         return chartData.first {
             total += $0.value
-            return rawSelectedChartValue <= total
+            return lastSelectedValue <= total
         }
     }
-
-    var chartData: [WeekdayChartData]
     
+    var chartData: [WeekdayChartData]
     var body: some View {
         
         VStack(alignment: .leading) {
@@ -53,8 +53,17 @@ struct StepPieChart: View {
                         .opacity(selectedWeekday?.date.weekdayInt == weekday.date.weekdayInt ? 1.0 : 0.4)
                     }
                 }
-                .chartAngleSelection(value: $rawSelectedChartValue.animation(.easeInOut))
+                .chartAngleSelection(value: $rawSelectedChartValue)
                 .frame(height: 240)
+                .onChange(of: rawSelectedChartValue) { oldValue, newValue in
+                    withAnimation(.easeInOut){
+                        guard let newValue else {
+                            lastSelectedValue = oldValue ?? 0
+                            return
+                        }
+                        lastSelectedValue = newValue
+                    }
+                }
                 .chartBackground { proxy in
                     GeometryReader { geo in
                         if let plotFrame = proxy.plotFrame {
@@ -63,6 +72,7 @@ struct StepPieChart: View {
                                 VStack {
                                     Text(selectedWeekday.date.weekdayTitle)
                                         .font(.title3.bold())
+                                        .animation(.none)
                                     Text(selectedWeekday.value, format: .number.precision(.fractionLength(0)))
                                         .fontWeight(.medium)
                                         .foregroundStyle(.secondary)
@@ -83,7 +93,6 @@ struct StepPieChart: View {
             if oldValue.date.weekdayInt != newValue.date.weekdayInt {
                 selectedDay = newValue.date
             }
-            
         }
     }
 }

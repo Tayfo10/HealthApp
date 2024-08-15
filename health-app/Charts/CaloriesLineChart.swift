@@ -34,7 +34,6 @@ struct CaloriesLineChart: View {
     }
     
     var body: some View {
-        
         VStack {
             NavigationLink(value: selectedStat) {
                 HStack{
@@ -56,7 +55,6 @@ struct CaloriesLineChart: View {
             if chartData.isEmpty {
                 ChartEmptyView(systemImageName: "chart.line.downtrend.xyaxis", title: "No data", description: "There is no calories data from Health App.")
             } else {
-                
                 Chart {
                     if let selectedHealthMetric {
                         RuleMark(x: .value("Selected Metric", selectedHealthMetric.date, unit: .day))
@@ -91,9 +89,7 @@ struct CaloriesLineChart: View {
                     }
                 }
                 .frame(height: 130)
-                
             }
-            
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))

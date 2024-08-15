@@ -58,7 +58,7 @@ struct DashboardView: View {
                     
                     switch selectedStat {
                     case .steps:
-                        
+        
                         StepTodayCard(chartData: hkManager.stepData)
                         StepBarChart(selectedStat: selectedStat, chartData: hkManager.stepData)
                         StepPieChart(chartData: ChartMath.averageWeekdayCount(for: hkManager.stepData))
@@ -77,7 +77,7 @@ struct DashboardView: View {
                 }
             }
             .padding()
-            .task { 
+            .task {
                 // await hkManager.addSimulatorData()
                 fetchHealthData()
             }

@@ -14,7 +14,6 @@ struct HealthKitPermissionView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isShowingHealthKitPermission = false
     
-    
     var description = """
     
     This app displays your step, weight and calory data in interactive charts.
@@ -43,7 +42,6 @@ struct HealthKitPermissionView: View {
         }
         .padding(30)
         .interactiveDismissDisabled()
-        
         .healthDataAccessRequest(store: hkmanager.store,
                                  shareTypes: hkmanager.types,
                                  readTypes: hkmanager.types,

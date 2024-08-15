@@ -37,7 +37,6 @@ import Observation
             intervalComponents: everyDay)
         
         do {
-            
             let stepCounts = try await sumOfStepsQuery.result(for: store)
             return stepCounts.statistics().map {
                 .init(date: $0.startDate, value: $0.sumQuantity()?.doubleValue(for: .count()) ?? 0)
@@ -66,7 +65,6 @@ import Observation
             intervalComponents: everyDay)
         
         do {
-    
             let weights = try await weightQuery.result(for: store)
             return weights.statistics().map {
                 .init(date: $0.startDate, value: $0.mostRecentQuantity()?.doubleValue(for: .pound()) ?? 0)
@@ -77,7 +75,7 @@ import Observation
             throw STError.unabletoCompleteRequest
         }
     }
-        
+    
     func fetchCalories() async throws -> [HealthMetric]{
         
         guard store.authorizationStatus(for: HKQuantityType(.activeEnergyBurned)) != .notDetermined else {
@@ -93,7 +91,7 @@ import Observation
             options: .cumulativeSum,
             anchorDate: interval.end,
             intervalComponents: everyDay)
-    
+        
         do {
             let caloriesCount = try await sumOfCaloriesQuery.result(for: store)
             return caloriesCount.statistics().map {
@@ -105,7 +103,7 @@ import Observation
             throw STError.unabletoCompleteRequest
         }
     }
-
+    
     func addStepData(for date: Date, value: Double) async throws {
         
         
@@ -185,31 +183,25 @@ import Observation
     }
     
     
-        func addSimulatorData() async {
-    
-            var mockSamples: [HKQuantitySample] = []
-    
-            for i in 0..<28 {
-    
-                let startDate = Calendar.current.date(byAdding: .day, value: -i, to: .now)!
-                let endDate = Calendar.current.date(byAdding: .second, value: 1, to: startDate)!
-    
-                let stepQuantity = HKQuantity(unit: .count(), doubleValue: .random(in: 4_000...20_000))
-                let weightQuantity = HKQuantity(unit: .pound(), doubleValue: .random(in: 160 + Double(i/3)...165 + Double(i/3)))
-                let caloriesQuantity = HKQuantity(unit: .largeCalorie(), doubleValue: .random(in: 100...900))
-    
-                let stepSample = HKQuantitySample(type: HKQuantityType(.stepCount), quantity: stepQuantity, start: startDate, end: endDate)
-                let weightSample = HKQuantitySample(type: HKQuantityType(.bodyMass), quantity: weightQuantity, start: startDate, end: endDate)
-                let caloriesSample = HKQuantitySample(type: HKQuantityType(.activeEnergyBurned), quantity: caloriesQuantity, start: startDate, end: endDate)
-    
-                mockSamples.append(stepSample)
-                mockSamples.append(weightSample)
-                mockSamples.append(caloriesSample)
-    
-            }
-    
-            try! await store.save(mockSamples)
-    
+    func addSimulatorData() async {
+        
+        var mockSamples: [HKQuantitySample] = []
+        for i in 0..<28 {
+            let startDate = Calendar.current.date(byAdding: .day, value: -i, to: .now)!
+            let endDate = Calendar.current.date(byAdding: .second, value: 1, to: startDate)!
+            
+            let stepQuantity = HKQuantity(unit: .count(), doubleValue: .random(in: 4_000...20_000))
+            let weightQuantity = HKQuantity(unit: .pound(), doubleValue: .random(in: 160 + Double(i/3)...165 + Double(i/3)))
+            let caloriesQuantity = HKQuantity(unit: .largeCalorie(), doubleValue: .random(in: 100...900))
+            
+            let stepSample = HKQuantitySample(type: HKQuantityType(.stepCount), quantity: stepQuantity, start: startDate, end: endDate)
+            let weightSample = HKQuantitySample(type: HKQuantityType(.bodyMass), quantity: weightQuantity, start: startDate, end: endDate)
+            let caloriesSample = HKQuantitySample(type: HKQuantityType(.activeEnergyBurned), quantity: caloriesQuantity, start: startDate, end: endDate)
+            
+            mockSamples.append(stepSample)
+            mockSamples.append(weightSample)
+            mockSamples.append(caloriesSample)
         }
-    
+        try! await store.save(mockSamples)
+    }
 }

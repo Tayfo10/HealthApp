@@ -15,7 +15,6 @@ struct StepBarChart: View {
     
     var selectedStat: HealthMetricType
     var chartData: [HealthMetric]
-    
     var selectedHealthMetric: HealthMetric? {
         guard let rawSelectedDate else { return nil }
         let selectedMetric = chartData.first {
@@ -51,7 +50,6 @@ struct StepBarChart: View {
             .padding(.bottom, 12)
             
             if chartData.isEmpty {
-                
                 ChartEmptyView(systemImageName: "chart.bar", title: "No data", description: "There is no step count data from Health App.")
                 
             } else {
@@ -61,7 +59,7 @@ struct StepBarChart: View {
                             .foregroundStyle(Color.secondary.opacity(0.3))
                             .offset(y: -10)
                             .annotation(position: .top, spacing: 0, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {annotationView}
-                        }
+                    }
                     RuleMark(y: .value("Average", avgStepCount))
                         .foregroundStyle(Color.secondary)
                         .lineStyle(.init(lineWidth: 1, dash:[4]))
@@ -98,7 +96,6 @@ struct StepBarChart: View {
             if oldValue?.weekdayInt != newValue?.weekdayInt {
                 selectedDay = newValue
             }
-            
         }
     }
     

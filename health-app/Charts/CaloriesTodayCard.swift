@@ -19,7 +19,6 @@ struct CaloriesTodayCard: View {
             }
             .padding()
             .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
-            
         } else {
             VStack {
                 HStack{
@@ -40,8 +39,6 @@ struct CaloriesTodayCard: View {
             .padding()
             .background(RoundedRectangle(cornerRadius: 12).fill(Color(.secondarySystemBackground)))
         }
-        
-        
     }
 }
 
